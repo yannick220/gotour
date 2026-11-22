@@ -640,13 +640,26 @@ html,body{
 .nav #full{display:flex;align-items:center;justify-content:center;padding:0}
 .nav #full .fullscreen-icon{width:28px;height:28px;stroke:currentColor;stroke-width:2.25;stroke-linejoin:round;stroke-linecap:square;fill:none;flex:none}
 
-/* GO ! STORE : grille et identité identiques aux autres diapositives */
-.go-store-scene .intro{font-size:27px;font-weight:800;letter-spacing:.065em}
-.go-store-scene .workarea{position:relative;min-height:0}
-.go-store-frame{width:100%;height:100%;min-height:0;overflow:hidden;border:2px solid var(--line);border-radius:16px;background:#fff}
-.go-store-frame iframe{display:block;width:100%;height:100%;border:0;background:#fff}
-.go-store-open{position:absolute;right:14px;bottom:14px;background:var(--yellow);color:var(--ink);border:0;border-radius:11px;padding:12px 16px;text-decoration:none;font-size:13px;font-weight:900;letter-spacing:.02em;box-shadow:0 5px 18px #0002}
-.go-store-open:hover{background:var(--cream)}
+/* GO ! STORE : une vraie page GO ! TOUR, sans sous-site blanc */
+.go-store-scene .intro{font-size:27px;font-weight:850;letter-spacing:.065em}
+.go-store-workarea{min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:24px}
+.go-store-picker{min-width:0;min-height:0;display:flex;flex-direction:column;gap:12px}
+.go-store-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(4,minmax(0,1fr));gap:12px;flex:1;min-height:0}
+.go-store-app{background:#252821;border:2px solid #555b50;border-radius:16px;display:flex;align-items:center;text-align:left;gap:15px;min-width:0;padding:10px 15px;color:var(--cream);transition:background .2s,border-color .2s,color .2s}
+.go-store-app:hover{border-color:var(--yellow)}
+.go-store-app.selected{background:var(--yellow);color:#11130f;border-color:var(--yellow)}
+.go-store-app-icon{width:48px;height:48px;display:grid;place-items:center;flex:none;border:2px solid currentColor;border-radius:13px;font-size:25px;font-weight:850}
+.go-store-app-copy{display:flex;flex:1;min-width:0;flex-direction:column;gap:5px}
+.go-store-app-copy b{font-size:21px;font-weight:900;line-height:1;letter-spacing:-.04em}
+.go-store-app-copy small{font-size:12px;font-weight:650;line-height:1.3;opacity:.86}
+.go-store-chevron{font-size:20px;opacity:.65}
+.go-store-legend{font-size:12px;font-weight:800;letter-spacing:.07em;color:#bfc4b9}
+.go-store-preview{min-width:0;min-height:0;background:#f5f7f5;border-radius:20px;border:3px solid var(--yellow);overflow:hidden;display:flex;flex-direction:column}
+.go-store-preview iframe{min-height:0;flex:1;width:100%;border:0;display:block;background:#f5f7f5}
+.go-store-demo-meta{min-height:48px;display:flex;align-items:center;justify-content:space-between;padding:7px 13px;background:#171914;color:white;gap:9px}
+.go-store-demo-meta strong{font-size:17px;font-weight:900;color:var(--yellow)}
+.go-store-demo-meta a{font-size:9px;font-weight:900;letter-spacing:.035em;color:white;text-decoration:none;text-align:right}
+.go-store-demo-meta a:hover{color:var(--yellow)}
 </style></head><body><div id="stage">
 <div class="menu-area" id="menuArea"><button class="menu-trigger" id="menuTrigger" aria-expanded="false">☰ MENU</button><div class="menu-panel" id="menuPanel"><div class="menu-heading">ALLER DIRECTEMENT À UNE PAGE</div><button data-go="0">Accueil</button><button data-go="1">Le dispositif</button><button data-go="2">Les contraintes</button><button data-go="3">Les applications</button><button data-go="4">L’architecture</button><button data-go="5">L’IA générative</button><button data-go="6">Le parcours</button><button data-go="7">GO ! STORE · Quelques exemples</button></div></div>
 <div class="nav"><button id="prev" aria-label="Précédent">‹</button><button id="next" aria-label="Suivant">›</button><button id="full" aria-label="Agrandir l’écran" title="Agrandir l’écran"><svg class="fullscreen-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3V9 M15 3H21V9 M3 15V21H9 M15 21H21V15"/></svg></button></div>
@@ -705,16 +718,40 @@ html,body{
 <section class="scene paper"><div class="eyebrow">GO ! TOUR · LES CHOSES À SAVOIR</div><h2 class="heading">L’IA générative</h2><p class="intro">À partir d’un prompt, l’IA peut produire des contenus numériques très variés — y compris du code informatique. C’est ce qui rend possible le vibe coding, même sans savoir programmer.</p><div class="workarea"><div class="options two-options ai-options"><button class="choice" data-ai="content"><span class="choice-title">CONTENUS RÉDACTIONNELS, VISUELS ET ARTISTIQUES</span><span class="ai-visual">Texte · Images · Musique · Voix · Vidéo · 3D</span></button><button class="choice" data-ai="code"><span class="choice-title">CODE INFORMATIQUE</span><span class="ai-visual">Le vibe coding</span></button></div><div class="explain" id="aiExplain"></div></div></section>
 <section class="scene dark"><div class="eyebrow">GO ! TOUR · À VOUS DE JOUER !</div><h2 class="heading">Le parcours</h2><p class="intro">De la définition du concept aux GO ! AWARDS : les équipes réalisent le travail préparatoire, Yannick génère une première application avec ChatGPT, puis le public la teste avant la finale.</p><div class="workarea"><div class="options steps-grid" id="steps"></div><div class="step-detail"><div class="explain" id="stepExplain">Choisissez une étape pour en découvrir les objectifs.</div><div class="step-out"><span class="label">LIVRABLE ATTENDU</span><span class="value" id="stepOutput"></span></div></div></div></section>
 <section class="scene dark go-store-scene" aria-label="GO ! STORE — Quelques exemples">
-  <div class="eyebrow">GO ! TOUR · DÉMONSTRATIONS INTERACTIVES</div>
-  <h2 class="heading">GO ! STORE</h2>
-  <p class="intro">QUELQUES EXEMPLES</p>
-  <div class="workarea">
-    <div class="go-store-frame"><iframe title="GO ! STORE — Quelques exemples d’applications touristiques" src="https://yannick220.github.io/siizapp/store.html" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
-    <a class="go-store-open" href="https://yannick220.github.io/siizapp/store.html" target="_blank" rel="noopener">AGRANDIR LE CATALOGUE ↗</a>
+<div class="eyebrow">GO ! TOUR · LE LABORATOIRE D'APPLICATIONS</div>
+<h2 class="heading">GO ! STORE</h2>
+<p class="intro">QUELQUES EXEMPLES</p>
+<div class="workarea go-store-workarea">
+  <div class="go-store-picker">
+    <div class="go-store-list" role="group" aria-label="Choisir une application à découvrir">
+      <button type="button" class="go-store-app selected" data-demo-app="siiz" aria-pressed="true"><span class="go-store-app-icon">S</span><span class="go-store-app-copy"><b>SIIZ</b><small>Le contact, à bonne distance.</small></span><span class="go-store-chevron">↗</span></button>
+      <button type="button" class="go-store-app" data-demo-app="nyx" aria-pressed="false"><span class="go-store-app-icon">✦</span><span class="go-store-app-copy"><b>NYX</b><small>Votre constellation de voyage.</small></span><span class="go-store-chevron">↗</span></button>
+      <button type="button" class="go-store-app" data-demo-app="post" aria-pressed="false"><span class="go-store-app-icon">✉</span><span class="go-store-app-copy"><b>POST</b><small>Une carte postale qui voyage.</small></span><span class="go-store-chevron">↗</span></button>
+      <button type="button" class="go-store-app" data-demo-app="ekoa" aria-pressed="false"><span class="go-store-app-icon">◉</span><span class="go-store-app-copy"><b>EKOA</b><small>Votre empreinte, votre forêt.</small></span><span class="go-store-chevron">↗</span></button>
+      <button type="button" class="go-store-app" data-demo-app="picti" aria-pressed="false"><span class="go-store-app-icon">▣</span><span class="go-store-app-copy"><b>PICTI</b><small>Le passé au même endroit.</small></span><span class="go-store-chevron">↗</span></button>
+      <button type="button" class="go-store-app" data-demo-app="nazca" aria-pressed="false"><span class="go-store-app-icon">↝</span><span class="go-store-app-copy"><b>NAZCA+</b><small>Dessinez votre itinéraire.</small></span><span class="go-store-chevron">↗</span></button>
+      <button type="button" class="go-store-app" data-demo-app="one" aria-pressed="false"><span class="go-store-app-icon">◌</span><span class="go-store-app-copy"><b>ONE</b><small>24 photos, un seul voyage.</small></span><span class="go-store-chevron">↗</span></button>
+    </div>
+    <div class="go-store-legend">SÉLECTIONNEZ UN PROJET POUR MANIPULER SA DÉMONSTRATION.</div>
   </div>
+  <div class="go-store-preview"><iframe id="goStorePreview" title="Démonstration interactive SIIZ" src="https://yannick220.github.io/siizapp/store.html?embed=1&amp;app=siiz" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    <div class="go-store-demo-meta"><strong id="goStoreActiveName">SIIZ</strong><a id="goStoreOpen" href="https://yannick220.github.io/siizapp/store.html" target="_blank" rel="noopener">OUVRIR LE CATALOGUE COMPLET ↗</a></div>
+  </div>
+</div>
 </section>
 </div><script>
 const stage=document.getElementById('stage'),scenes=[...document.querySelectorAll('.scene')];let index=0;
+const goStoreApps=[...document.querySelectorAll('[data-demo-app]')];
+const goStoreFrame=document.getElementById('goStorePreview');
+const goStoreActiveName=document.getElementById('goStoreActiveName');
+goStoreApps.forEach(button=>button.addEventListener('click',()=>{
+  const app=button.dataset.demoApp;
+  goStoreApps.forEach(item=>{const active=item===button;item.classList.toggle('selected',active);item.setAttribute('aria-pressed',String(active))});
+  goStoreActiveName.textContent=button.querySelector('b').textContent;
+  goStoreFrame.title='Démonstration interactive '+goStoreActiveName.textContent;
+  goStoreFrame.src='https://yannick220.github.io/siizapp/store.html?embed=1&app='+encodeURIComponent(app);
+}));
+
 const menuArea=document.getElementById('menuArea'),menuTrigger=document.getElementById('menuTrigger'),prev=document.getElementById('prev'),next=document.getElementById('next');
 function fit(){let scale=Math.min((innerWidth-24)/1600,(innerHeight-24)/900,1.8);stage.style.transform=`translate(-50%,-50%) scale(${scale})`;}addEventListener('resize',fit);fit();
 function navigate(n){index=Math.max(0,Math.min(scenes.length-1,n));scenes.forEach((s,i)=>{s.classList.toggle('active',i===index);s.classList.toggle('before',i<index)});menuArea.classList.remove('open');menuTrigger.setAttribute('aria-expanded','false');prev.classList.toggle('hide',index===0);next.classList.toggle('hide',index===scenes.length-1);if(index===4){requestAnimationFrame(alignArchitectureArrows);setTimeout(alignArchitectureArrows,250)}}
