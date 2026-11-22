@@ -640,6 +640,28 @@ html,body{
 .nav #full{display:flex;align-items:center;justify-content:center;padding:0}
 .nav #full .fullscreen-icon{width:28px;height:28px;stroke:currentColor;stroke-width:2.25;stroke-linejoin:round;stroke-linecap:square;fill:none;flex:none}
 
+/* GO ! STORE FINAL LAYOUT — explicit positions, immune to the general .scene grid */
+.scene.go-store-scene{display:block!important;position:absolute!important;inset:0!important;padding:0!important;overflow:hidden!important}
+.go-store-scene>.eyebrow{position:absolute!important;left:86px!important;top:75px!important;margin:0!important;height:31px!important;line-height:31px!important}
+.go-store-scene>.heading{position:absolute!important;left:86px!important;top:122px!important;margin:0!important;height:84px!important;line-height:84px!important}
+.scene.go-store-scene>.go-store-workarea{
+  position:absolute!important;left:86px!important;right:86px!important;top:235px!important;bottom:112px!important;
+  width:auto!important;height:auto!important;max-height:none!important;min-height:0!important;
+  display:grid!important;grid-template-columns:minmax(0,1fr) 390px!important;grid-template-rows:minmax(0,1fr)!important;
+  column-gap:24px!important;row-gap:0!important;padding:0!important;margin:0!important;
+  align-items:stretch!important;overflow:visible!important
+}
+.go-store-scene .go-store-picker{display:flex!important;flex-direction:column!important;gap:12px!important;min-width:0!important;min-height:0!important;height:100%!important}
+.go-store-scene .go-store-list{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(4,minmax(0,1fr))!important;gap:12px!important;flex:1 1 auto!important;min-height:0!important;height:auto!important;align-items:stretch!important}
+.go-store-scene .go-store-app{display:flex!important;align-items:center!important;min-height:0!important;width:100%!important;height:100%!important;overflow:hidden!important;padding:12px 14px!important}
+.go-store-scene .go-store-app-icon{width:46px!important;height:46px!important;flex:0 0 46px!important}
+.go-store-scene .go-store-app-copy{min-width:0!important;overflow:hidden!important}
+.go-store-scene .go-store-app-copy small{white-space:normal!important}
+.go-store-scene .go-store-legend{flex:0 0 18px!important;white-space:nowrap!important}
+.go-store-scene .go-store-preview{display:flex!important;flex-direction:column!important;min-height:0!important;height:100%!important;overflow:hidden!important;align-self:stretch!important}
+.go-store-scene .go-store-preview iframe{display:block!important;flex:1 1 0!important;min-height:0!important;height:0!important;width:100%!important;border:0!important}
+.go-store-scene .go-store-demo-meta{flex:0 0 48px!important}
+
 /* GO ! STORE : une vraie page GO ! TOUR, sans sous-site blanc */
 /* This slide has no intro row: give its workarea the entire final grid row. */
 .go-store-scene.scene{grid-template-rows:31px 84px minmax(0,1fr);row-gap:15px}
