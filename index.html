@@ -690,6 +690,43 @@ html,body{
 .go-store-demo-meta strong{font-size:17px;font-weight:900;color:var(--yellow)}
 .go-store-demo-meta a{font-size:9px;font-weight:900;letter-spacing:.035em;color:white;text-decoration:none;text-align:right}
 .go-store-demo-meta a:hover{color:var(--yellow)}
+
+/* GO! STORE — phone floats on the slide; tap to open an immersive in-slide demo. */
+.go-store-scene .go-store-preview,
+.go-store-scene .go-store-preview.go-store-preview{
+  background:transparent!important;border:0!important;border-radius:0!important;
+  overflow:visible!important;box-shadow:none!important;position:relative!important;
+}
+.go-store-scene .go-store-preview iframe{background:transparent!important;pointer-events:none!important}
+.go-store-launch{position:absolute;inset:0;border:0;background:transparent;cursor:zoom-in;z-index:2;width:100%;height:100%;border-radius:34px}
+.go-store-launch:hover .go-store-launch-ring,.go-store-launch:focus-visible .go-store-launch-ring{opacity:1;transform:translateY(0)}
+.go-store-launch-ring{position:absolute;right:17px;bottom:20px;display:grid;place-items:center;width:39px;height:39px;color:#fff;background:#131815bf;border:1px solid #ffffff55;border-radius:50%;font-size:27px;opacity:.65;transform:translateY(3px);transition:.2s}
+.go-store-scene .go-store-demo-name,.go-store-scene .go-store-exit{display:none}
+.go-store-scene.demo-focused>.eyebrow,.go-store-scene.demo-focused>.heading,.go-store-scene.demo-focused .go-store-picker{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+.scene.go-store-scene.demo-focused>.go-store-workarea{
+ left:0!important;top:0!important;right:0!important;bottom:0!important;
+ width:100%!important;height:100%!important;display:block!important;
+ z-index:10!important;pointer-events:none!important
+}
+.go-store-scene.demo-focused .go-store-preview{
+ position:absolute!important;left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;
+ width:560px!important;height:818px!important;max-height:818px!important;
+ transform:translate(-50%,-50%)!important;pointer-events:auto!important;
+}
+.go-store-scene.demo-focused .go-store-preview iframe{pointer-events:auto!important;cursor:auto}
+.go-store-scene.demo-focused .go-store-launch{display:none!important}
+.go-store-scene.demo-focused .go-store-exit{
+ display:block!important;position:absolute!important;z-index:30!important;left:86px!important;top:75px!important;
+ border:2px solid #626b60!important;border-radius:12px!important;
+ color:#fffdf2!important;background:#262b23!important;padding:13px 22px!important;
+ font-size:19px!important;letter-spacing:.06em!important;font-weight:900!important;cursor:pointer!important
+}
+.go-store-scene.demo-focused .go-store-exit:hover{background:var(--yellow)!important;color:#11130f!important;border-color:var(--yellow)!important}
+.go-store-scene.demo-focused .go-store-demo-name{
+ display:block!important;position:absolute!important;z-index:25!important;left:86px!important;bottom:77px!important;
+ font-size:27px!important;line-height:1!important;font-weight:900!important;color:var(--yellow)!important;letter-spacing:.03em!important;
+}
 </style></head><body><div id="stage">
 <div class="menu-area" id="menuArea"><button class="menu-trigger" id="menuTrigger" aria-expanded="false">☰ MENU</button><div class="menu-panel" id="menuPanel"><div class="menu-heading">ALLER DIRECTEMENT À UNE PAGE</div><button data-go="0">Accueil</button><button data-go="1">Le dispositif</button><button data-go="2">Les contraintes</button><button data-go="3">Les applications</button><button data-go="4">L’architecture</button><button data-go="5">L’IA générative</button><button data-go="6">Le parcours</button><button data-go="7">Quelques exemples</button></div></div>
 <div class="nav"><button id="prev" aria-label="Précédent">‹</button><button id="next" aria-label="Suivant">›</button><button id="full" aria-label="Agrandir l’écran" title="Agrandir l’écran"><svg class="fullscreen-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3V9 M15 3H21V9 M3 15V21H9 M15 21H21V15"/></svg></button></div>
@@ -763,27 +800,49 @@ html,body{
     </div>
     <div class="go-store-legend">SÉLECTIONNEZ UN PROJET POUR MANIPULER SA DÉMONSTRATION.</div>
   </div>
-  <div class="go-store-preview"><iframe id="goStorePreview" title="Démonstration interactive SIIZ" src="https://yannick220.github.io/siizapp/store.html?embed=1&amp;app=siiz" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-    <div class="go-store-demo-meta"><strong id="goStoreActiveName">SIIZ</strong><a id="goStoreOpen" href="https://yannick220.github.io/siizapp/store.html" target="_blank" rel="noopener">OUVRIR LE CATALOGUE COMPLET ↗</a></div>
+  <div class="go-store-preview" id="goStorePreviewShell">
+    <iframe id="goStorePreview" title="Aperçu de SIIZ" src="https://yannick220.github.io/siizapp/store.html?embed=1&amp;app=siiz" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    <button type="button" class="go-store-launch" id="goStoreLaunch" aria-label="Agrandir la démonstration de SIIZ"><span class="go-store-launch-ring" aria-hidden="true">⤢</span></button>
   </div>
+  <button type="button" class="go-store-exit" id="goStoreExit" aria-label="Sortir de la démonstration">‹ &nbsp; SORTIR</button>
+  <strong class="go-store-demo-name" id="goStoreActiveName">SIIZ</strong>
 </div>
 </section>
 </div><script>
 const stage=document.getElementById('stage'),scenes=[...document.querySelectorAll('.scene')];let index=0;
 const goStoreApps=[...document.querySelectorAll('[data-demo-app]')];
+const goStoreScene=document.querySelector('.go-store-scene');
 const goStoreFrame=document.getElementById('goStorePreview');
 const goStoreActiveName=document.getElementById('goStoreActiveName');
+const goStoreLaunch=document.getElementById('goStoreLaunch');
+const goStoreExit=document.getElementById('goStoreExit');
+function closeGoStoreDemo(){
+  if(!goStoreScene.classList.contains('demo-focused'))return;
+  goStoreScene.classList.remove('demo-focused');
+  document.body.classList.remove('go-store-demo-running');
+  goStoreLaunch.focus({preventScroll:true});
+}
+function openGoStoreDemo(){
+  goStoreScene.classList.add('demo-focused');
+  document.body.classList.add('go-store-demo-running');
+  menuArea.classList.remove('open');
+  menuTrigger.setAttribute('aria-expanded','false');
+  goStoreExit.focus({preventScroll:true});
+}
 goStoreApps.forEach(button=>button.addEventListener('click',()=>{
   const app=button.dataset.demoApp;
   goStoreApps.forEach(item=>{const active=item===button;item.classList.toggle('selected',active);item.setAttribute('aria-pressed',String(active))});
   goStoreActiveName.textContent=button.querySelector('b').textContent;
   goStoreFrame.title='Démonstration interactive '+goStoreActiveName.textContent;
+  goStoreLaunch.setAttribute('aria-label','Agrandir la démonstration de '+goStoreActiveName.textContent);
   goStoreFrame.src='https://yannick220.github.io/siizapp/store.html?embed=1&app='+encodeURIComponent(app);
 }));
+goStoreLaunch.addEventListener('click',openGoStoreDemo);
+goStoreExit.addEventListener('click',closeGoStoreDemo);
 
 const menuArea=document.getElementById('menuArea'),menuTrigger=document.getElementById('menuTrigger'),prev=document.getElementById('prev'),next=document.getElementById('next');
 function fit(){let scale=Math.min((innerWidth-24)/1600,(innerHeight-24)/900,1.8);stage.style.transform=`translate(-50%,-50%) scale(${scale})`;}addEventListener('resize',fit);fit();
-function navigate(n){index=Math.max(0,Math.min(scenes.length-1,n));scenes.forEach((s,i)=>{s.classList.toggle('active',i===index);s.classList.toggle('before',i<index)});menuArea.classList.remove('open');menuTrigger.setAttribute('aria-expanded','false');prev.classList.toggle('hide',index===0);next.classList.toggle('hide',index===scenes.length-1);if(index===4){requestAnimationFrame(alignArchitectureArrows);setTimeout(alignArchitectureArrows,250)}}
+function navigate(n){closeGoStoreDemo();index=Math.max(0,Math.min(scenes.length-1,n));scenes.forEach((s,i)=>{s.classList.toggle('active',i===index);s.classList.toggle('before',i<index)});menuArea.classList.remove('open');menuTrigger.setAttribute('aria-expanded','false');prev.classList.toggle('hide',index===0);next.classList.toggle('hide',index===scenes.length-1);if(index===4){requestAnimationFrame(alignArchitectureArrows);setTimeout(alignArchitectureArrows,250)}}
 prev.onclick=()=>navigate(index-1);next.onclick=()=>navigate(index+1);const fullscreenButton=document.getElementById('full');
 function syncFullscreenButton(){
   const isFullscreen=Boolean(document.fullscreenElement || document.webkitFullscreenElement);
@@ -804,7 +863,7 @@ document.addEventListener('fullscreenchange',syncFullscreenButton);
 document.addEventListener('webkitfullscreenchange',syncFullscreenButton);
 syncFullscreenButton();
 menuTrigger.onclick=()=>{menuArea.classList.toggle('open');menuTrigger.setAttribute('aria-expanded',String(menuArea.classList.contains('open')))};document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>navigate(Number(b.dataset.go)));document.addEventListener('click',e=>{if(!menuArea.contains(e.target))menuArea.classList.remove('open')});
-addEventListener('keydown',e=>{if(e.key==='Escape'){menuArea.classList.remove('open');return}if(menuArea.classList.contains('open'))return;if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();navigate(index+1)}if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();navigate(index-1)}});
+addEventListener('keydown',e=>{if(e.key==='Escape'){if(goStoreScene.classList.contains('demo-focused')){closeGoStoreDemo();e.preventDefault();return}menuArea.classList.remove('open');return}if(goStoreScene.classList.contains('demo-focused'))returnif(menuArea.classList.contains('open'))return;if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();navigate(index+1)}if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();navigate(index-1)}});
 let wheelPause=false;addEventListener('wheel',e=>{if(wheelPause||menuArea.classList.contains('open')||Math.abs(e.deltaY)<18)return;wheelPause=true;navigate(index+(e.deltaY>0?1:-1));setTimeout(()=>wheelPause=false,820)},{passive:true});
 function bind(group,attribute,data,output){
   const buttons=[...document.querySelectorAll(group)];
