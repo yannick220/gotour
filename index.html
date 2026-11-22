@@ -665,6 +665,31 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
 .go-store-scene.demo-focused .go-store-launch{display:none}
 .go-store-scene.demo-focused .go-store-exit{display:block;position:absolute;top:75px;left:86px;z-index:20;pointer-events:auto;background:#252821;border:2px solid #757c6d;border-radius:12px;padding:14px 23px;color:#fffdf2;font-size:19px;font-weight:900;cursor:pointer}
 .go-store-scene.demo-focused .go-store-demo-name{display:block;position:absolute;bottom:75px;left:86px;color:#ffd335;font-size:28px;font-weight:900}
+
+/* SIIZ focused presentation: fixed centered phone, circular exit, editorial right panel. */
+.go-store-scene.demo-focused .go-store-preview{
+ left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;
+ transition:none!important;animation:none!important;
+}
+.go-store-scene.demo-focused .go-store-exit{
+ top:72px!important;left:86px!important;width:52px!important;height:52px!important;
+ border:1px solid #72776a!important;border-radius:50%!important;padding:0!important;
+ background:#252821!important;color:#fff!important;font-family:Arial,sans-serif!important;
+ font-size:34px!important;font-weight:300!important;line-height:1!important;
+ display:flex!important;align-items:center!important;justify-content:center!important
+}
+.go-store-demo-story{display:none}
+.go-store-scene.demo-focused .go-store-demo-story{
+ display:flex;position:absolute;right:66px;top:50%;transform:translateY(-50%);
+ width:320px;flex-direction:column;gap:20px;color:#fffdf2;z-index:18;pointer-events:none;
+}
+.go-store-story-brand{display:flex;align-items:center;gap:15px}
+.go-store-story-brand img{width:57px;height:57px;object-fit:contain}
+.go-store-story-brand strong{font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:49px;letter-spacing:-2px;text-transform:none;color:#ffd335}
+.go-store-demo-story h3{font-family:Montserrat,Arial,sans-serif;font-size:26px;line-height:1.15;margin:10px 0 0;font-weight:750;letter-spacing:-.8px}
+.go-store-demo-story p{font-family:Montserrat,Arial,sans-serif;font-size:16px;line-height:1.65;margin:0;color:#d6d7d0;font-weight:450}
+.go-store-scene.demo-focused .go-store-demo-name{display:none!important}
+.go-store-scene.demo-focused .go-store-demo-story:not(.siiz-active){display:none!important}
 </style></head><body><div id="stage">
 <div class="menu-area" id="menuArea"><button class="menu-trigger" id="menuTrigger" aria-expanded="false">☰ MENU</button><div class="menu-panel" id="menuPanel"><div class="menu-heading">ALLER DIRECTEMENT À UNE PAGE</div><button data-go="0">Accueil</button><button data-go="1">Le dispositif</button><button data-go="2">Les contraintes</button><button data-go="3">Les applications</button><button data-go="4">L’architecture</button><button data-go="5">L’IA générative</button><button data-go="6">Le parcours</button><button data-go="7">Quelques exemples</button></div></div>
 <div class="nav"><button id="prev" aria-label="Précédent">‹</button><button id="next" aria-label="Suivant">›</button><button id="full" aria-label="Agrandir l’écran" title="Agrandir l’écran"><svg class="fullscreen-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3V9 M15 3H21V9 M3 15V21H9 M15 21H21V15"/></svg></button></div>
@@ -733,9 +758,9 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
 <button type="button" class="go-store-app" data-demo-app="picti" aria-pressed="false"><span class="go-store-app-icon">▣</span><span class="go-store-app-copy"><b>PICTI</b><small>Le passé au même endroit.</small></span></button>
 <button type="button" class="go-store-app" data-demo-app="nazca" aria-pressed="false"><span class="go-store-app-icon">↝</span><span class="go-store-app-copy"><b>NAZCA+</b><small>Dessinez votre itinéraire.</small></span></button>
 <button type="button" class="go-store-app" data-demo-app="one" aria-pressed="false"><span class="go-store-app-icon">◌</span><span class="go-store-app-copy"><b>ONE</b><small>24 photos, un seul voyage.</small></span></button></div>
-<div class="go-store-preview" id="goStorePreviewShell"><iframe id="goStorePreview" title="Aperçu SIIZ" src="https://yannick220.github.io/siizapp/store.html?embed=1&amp;app=siiz&amp;v=simple-20261122-71d287d" loading="lazy"></iframe><button class="go-store-launch" id="goStoreLaunch" aria-label="Agrandir la démonstration"></button></div>
+<div class="go-store-preview" id="goStorePreviewShell"><iframe id="goStorePreview" title="Aperçu SIIZ" src="https://yannick220.github.io/siizapp/store.html?embed=1&amp;app=siiz&amp;v=brand-20261123-8d829d7" loading="lazy"></iframe><button class="go-store-launch" id="goStoreLaunch" aria-label="Agrandir la démonstration"></button></div>
 </div>
-<button class="go-store-exit" id="goStoreExit">‹ &nbsp; SORTIR</button><strong class="go-store-demo-name" id="goStoreActiveName">SIIZ</strong>
+<button class="go-store-exit" id="goStoreExit" aria-label="Quitter la démonstration">×</button><div class="go-store-demo-story" id="goStoreDemoStory"><div class="go-store-story-brand"><img src="https://yannick220.github.io/siizapp/assets/siiz-logo.svg" alt=""><strong>siiz</strong></div><h3>Le contact, à bonne distance.</h3><p>Partir en vacances, c’est aussi prendre de la distance. SIIZ permet de garder le contact avec ses proches sans rester constamment connecté. Plus on s’éloigne, plus les échanges deviennent discrets. Une autre manière de profiter pleinement de son voyage, sans perdre le lien.</p></div><strong class="go-store-demo-name" id="goStoreActiveName">SIIZ</strong>
 </section>
 </div><script>
 const stage=document.getElementById('stage'),scenes=[...document.querySelectorAll('.scene')];let index=0;
@@ -899,14 +924,14 @@ const storeExit=document.getElementById('goStoreExit');
 const storeLaunch=document.getElementById('goStoreLaunch');
 const storeName=document.getElementById('goStoreActiveName');
 function storeClose(){storeScene.classList.remove('demo-focused');document.body.classList.remove('go-store-demo-running')}
-function storeOpen(){storeScene.classList.add('demo-focused');document.body.classList.add('go-store-demo-running');storeExit.focus({preventScroll:true})}
+function storeOpen(){document.getElementById('goStoreDemoStory').classList.toggle('siiz-active',storeName.textContent.trim().toLowerCase()==='siiz');storeScene.classList.add('demo-focused');document.body.classList.add('go-store-demo-running');storeExit.focus({preventScroll:true})}
 storeLaunch.addEventListener('click',storeOpen);
 storeExit.addEventListener('click',storeClose);
 document.querySelectorAll('[data-demo-app]').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('[data-demo-app]').forEach(x=>{x.classList.toggle('selected',x===b);x.setAttribute('aria-pressed',String(x===b))});
   storeName.textContent=b.querySelector('b').textContent;
   storeFrame.title='Démonstration '+storeName.textContent;
-  storeFrame.src='https://yannick220.github.io/siizapp/store.html?embed=1&app='+encodeURIComponent(b.dataset.demoApp)+'&v=simple-20261122-71d287d';
+  storeFrame.src='https://yannick220.github.io/siizapp/store.html?embed=1&app='+encodeURIComponent(b.dataset.demoApp)+'&v=brand-20261123-8d829d7';
 }));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&storeScene.classList.contains('demo-focused')){storeClose();e.stopImmediatePropagation()}},true);
 document.getElementById('prev').addEventListener('click',storeClose);
