@@ -713,6 +713,26 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
 .go-store-scene.demo-focused .go-store-exit{
  border:2px solid var(--line)!important;background:var(--panel)!important;color:var(--cream)!important;
 }
+
+/* SIIZ presentation alignment with GO! TOUR */
+.go-store-scene.demo-focused .go-store-demo-story{
+ right:24px!important;top:43%!important;transform:translateY(-50%)!important;
+ width:390px!important;gap:17px!important;
+}
+.go-store-scene.demo-focused .go-store-story-brand img{
+ visibility:hidden!important;
+}
+.go-store-scene.demo-focused .go-store-story-brand{
+ position:relative!important;
+}
+.go-store-scene.demo-focused .go-store-story-brand::before{
+ content:"";display:block;width:49px;height:49px;flex:0 0 49px;
+ background:var(--yellow);
+ -webkit-mask:url("https://yannick220.github.io/siizapp/assets/siiz-logo.svg") center/contain no-repeat;
+ mask:url("https://yannick220.github.io/siizapp/assets/siiz-logo.svg") center/contain no-repeat;
+ margin-right:-63px;z-index:1;
+}
+.go-store-scene.demo-focused .go-store-story-eyebrow{display:none!important}
 </style></head><body><div id="stage">
 <div class="menu-area" id="menuArea"><button class="menu-trigger" id="menuTrigger" aria-expanded="false">☰ MENU</button><div class="menu-panel" id="menuPanel"><div class="menu-heading">ALLER DIRECTEMENT À UNE PAGE</div><button data-go="0">Accueil</button><button data-go="1">Le dispositif</button><button data-go="2">Les contraintes</button><button data-go="3">Les applications</button><button data-go="4">L’architecture</button><button data-go="5">L’IA générative</button><button data-go="6">Le parcours</button><button data-go="7">Quelques exemples</button></div></div>
 <div class="nav"><button id="prev" aria-label="Précédent">‹</button><button id="next" aria-label="Suivant">›</button><button id="full" aria-label="Agrandir l’écran" title="Agrandir l’écran"><svg class="fullscreen-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3V9 M15 3H21V9 M3 15V21H9 M15 21H21V15"/></svg></button></div>
@@ -783,7 +803,7 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
 <button type="button" class="go-store-app" data-demo-app="one" aria-pressed="false"><span class="go-store-app-icon">◌</span><span class="go-store-app-copy"><b>ONE</b><small>24 photos, un seul voyage.</small></span></button></div>
 <div class="go-store-preview" id="goStorePreviewShell"><iframe id="goStorePreview" title="Aperçu SIIZ" src="https://yannick220.github.io/siizapp/store.html?embed=1&amp;app=siiz&amp;v=brand-20261123-8d829d7" loading="lazy"></iframe><button class="go-store-launch" id="goStoreLaunch" aria-label="Agrandir la démonstration"></button></div>
 </div>
-<button class="go-store-exit" id="goStoreExit" aria-label="Quitter la démonstration">×</button><div class="go-store-demo-story" id="goStoreDemoStory"><div class="go-store-story-brand"><img src="https://yannick220.github.io/siizapp/assets/siiz-logo.svg" alt=""><strong>siiz</strong></div><div class="go-store-story-eyebrow">GO! TOUR · GO! STORE</div><h3>LE CONTACT,<span>À BONNE DISTANCE.</span></h3><p>Partir en vacances, c’est aussi prendre de la distance. SIIZ permet de garder le contact avec ses proches sans rester constamment connecté. Plus on s’éloigne, plus les échanges deviennent discrets. Une autre manière de profiter pleinement de son voyage, sans perdre le lien.</p></div><strong class="go-store-demo-name" id="goStoreActiveName">SIIZ</strong>
+<button class="go-store-exit" id="goStoreExit" aria-label="Quitter la démonstration">×</button><div class="go-store-demo-story" id="goStoreDemoStory"><div class="go-store-story-brand"><img src="https://yannick220.github.io/siizapp/assets/siiz-logo.svg" alt=""><strong>siiz</strong></div><h3>LE CONTACT,<span>À BONNE DISTANCE.</span></h3><p>Partir en vacances, c’est aussi prendre de la distance. SIIZ permet de garder le contact avec ses proches sans rester constamment connecté. Plus on s’éloigne, plus les échanges deviennent discrets. Une autre manière de profiter pleinement de son voyage, sans perdre le lien.</p></div><strong class="go-store-demo-name" id="goStoreActiveName">SIIZ</strong>
 </section>
 </div><script>
 const stage=document.getElementById('stage'),scenes=[...document.querySelectorAll('.scene')];let index=0;
