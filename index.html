@@ -903,5 +903,5 @@ steps.forEach(s=>{
   stepWrap.appendChild(b);
 });
 document.getElementById('stepExplain').textContent='';
-navigate(0);
+navigate(new URLSearchParams(window.location.search).get('page') === 'store' ? scenes.length - 1 : 0);
 </script></body></html>
