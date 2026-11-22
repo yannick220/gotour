@@ -733,6 +733,28 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
  margin-right:-63px;z-index:1;
 }
 .go-store-scene.demo-focused .go-store-story-eyebrow{display:none!important}
+
+/* Balanced, two-column presentation: device left, brand story right. */
+.go-store-scene.demo-focused .go-store-preview{
+ left:36%!important;top:50%!important;transform:translate(-50%,-50%)!important;
+ transition:none!important;
+}
+.go-store-scene.demo-focused .go-store-demo-story{
+ left:57%!important;right:auto!important;top:50%!important;
+ transform:translateY(-50%)!important;width:510px!important;max-width:510px!important;
+ gap:20px!important;
+}
+.go-store-scene.demo-focused .go-store-story-brand{margin-bottom:14px!important}
+.go-store-scene.demo-focused .go-store-demo-story h3{
+ font-size:42px!important;line-height:1.08!important;max-width:500px!important;
+}
+.go-store-scene.demo-focused .go-store-demo-story p{
+ font-size:17px!important;line-height:1.55!important;font-weight:600!important;
+ max-width:480px!important;margin-top:9px!important;
+}
+.go-store-scene.demo-focused .go-store-demo-story p strong{
+ color:var(--yellow)!important;font-weight:900!important;
+}
 </style></head><body><div id="stage">
 <div class="menu-area" id="menuArea"><button class="menu-trigger" id="menuTrigger" aria-expanded="false">☰ MENU</button><div class="menu-panel" id="menuPanel"><div class="menu-heading">ALLER DIRECTEMENT À UNE PAGE</div><button data-go="0">Accueil</button><button data-go="1">Le dispositif</button><button data-go="2">Les contraintes</button><button data-go="3">Les applications</button><button data-go="4">L’architecture</button><button data-go="5">L’IA générative</button><button data-go="6">Le parcours</button><button data-go="7">Quelques exemples</button></div></div>
 <div class="nav"><button id="prev" aria-label="Précédent">‹</button><button id="next" aria-label="Suivant">›</button><button id="full" aria-label="Agrandir l’écran" title="Agrandir l’écran"><svg class="fullscreen-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3V9 M15 3H21V9 M3 15V21H9 M15 21H21V15"/></svg></button></div>
@@ -803,7 +825,7 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
 <button type="button" class="go-store-app" data-demo-app="one" aria-pressed="false"><span class="go-store-app-icon">◌</span><span class="go-store-app-copy"><b>ONE</b><small>24 photos, un seul voyage.</small></span></button></div>
 <div class="go-store-preview" id="goStorePreviewShell"><iframe id="goStorePreview" title="Aperçu SIIZ" src="https://yannick220.github.io/siizapp/store.html?embed=1&amp;app=siiz&amp;v=brand-20261123-8d829d7" loading="lazy"></iframe><button class="go-store-launch" id="goStoreLaunch" aria-label="Agrandir la démonstration"></button></div>
 </div>
-<button class="go-store-exit" id="goStoreExit" aria-label="Quitter la démonstration">×</button><div class="go-store-demo-story" id="goStoreDemoStory"><div class="go-store-story-brand"><img src="https://yannick220.github.io/siizapp/assets/siiz-logo.svg" alt=""><strong>siiz</strong></div><h3>LE CONTACT,<span>À BONNE DISTANCE.</span></h3><p>SIIZ est la messagerie pensée pour les voyageurs qui veulent vraiment déconnecter. En vacances, elle met naturellement à distance les échanges avec ceux qui sont restés chez eux, pour profiter pleinement du voyage sans sollicitations permanentes. Et lorsqu’on souhaite reprendre contact, un simple glissement de doigt suffit pour se reconnecter. La déconnexion est automatique, la reconnexion reste libre : gardez le lien, à votre rythme.</p></div><strong class="go-store-demo-name" id="goStoreActiveName">SIIZ</strong>
+<button class="go-store-exit" id="goStoreExit" aria-label="Quitter la démonstration">×</button><div class="go-store-demo-story" id="goStoreDemoStory"><div class="go-store-story-brand"><img src="https://yannick220.github.io/siizapp/assets/siiz-logo.svg" alt=""><strong>siiz</strong></div><h3>LE CONTACT,<span>À BONNE DISTANCE.</span></h3><p>En voyage, profitez de ceux qui sont là. SIIZ met naturellement à distance les conversations avec ceux qui sont restés chez eux, sans jamais couper le lien.<br><br>Envie de les retrouver ? Un simple glissement de doigt suffit pour se reconnecter.<br><br><strong>Déconnecté par défaut. Connecté par choix.</strong></p></div><strong class="go-store-demo-name" id="goStoreActiveName">SIIZ</strong>
 </section>
 </div><script>
 const stage=document.getElementById('stage'),scenes=[...document.querySelectorAll('.scene')];let index=0;
