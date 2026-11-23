@@ -1152,7 +1152,7 @@ function siizResetDemo(){
  }
 }
 function storeClose(){siizResetDemo();storeScene.classList.remove('demo-focused');document.body.classList.remove('go-store-demo-running');/* Tear down the iframe so the next opening starts a fresh session. */if(!storeFrame.hasAttribute('srcdoc')){storeFrame.src='about:blank';}else{storeFrame.srcdoc='';}storeFrame.dataset.needsReload='1';loadStoreApp(document.querySelector('.go-store-app.selected')?.dataset.demoApp||'siiz')}
-function storeOpen(){const app=document.querySelector('.go-store-app.selected')?.dataset.demoApp||'siiz';const story=document.getElementById('goStoreDemoStory');['siiz','zuno','urbx','guidz','nazca','post','nyx','one'].forEach(name=>story.classList.toggle(name+'-active',name===app));loadStoreAppForOpening(app)storeScene.classList.add('demo-focused');document.body.classList.add('go-store-demo-running');storeExit.focus({preventScroll:true})}
+function storeOpen(){const app=document.querySelector('.go-store-app.selected')?.dataset.demoApp||'siiz';const story=document.getElementById('goStoreDemoStory');['siiz','zuno','urbx','guidz','nazca','post','nyx','one'].forEach(name=>story.classList.toggle(name+'-active',name===app));loadStoreAppForOpening(app);storeScene.classList.add('demo-focused');document.body.classList.add('go-store-demo-running');storeExit.focus({preventScroll:true})}
 
 /* Triple-click the visible SIIZ story next to the enlarged phone. */
 const siizExternalPanel=document.getElementById('siizExternalMode');
