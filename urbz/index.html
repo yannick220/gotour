@@ -512,10 +512,12 @@ function pointInRing(point,ring){let inside=false;const x=point[0],y=point[1];
 }
 function validBuilding(tags){return !!tags && !!tags.building && tags.building!=='no' && tags.building!=='construction' && tags.building!=='proposed'}
 function visualHeight(tags){
- const read=s=>Number.parseFloat(String(s??'').replace(',','.'));
- const height=read(tags.height),levels=read(tags['building:levels']);
- const h=Number.isFinite(height)&&height>0?height:Number.isFinite(levels)&&levels>0?levels*3:12;
- return Math.min(150,Math.max(18,h*1.75));
+ // Preserve documented OSM heights; never flatten distinct buildings to a
+ // common minimum or exaggerate measured heights by a fixed multiplier.
+ const read=s=>Number.parseFloat(String(s??'').trim().replace(',','.'));
+ const height=read(tags?.height),levels=read(tags?.['building:levels']);
+ const h=Number.isFinite(height)&&height>0?height:Number.isFinite(levels)&&levels>0?levels*3:9;
+ return Math.max(2,h);
 }
 function geometryWay(w,nodes){const coords=[];
  if(w.geometry){for(const p of w.geometry)if(Number.isFinite(p.lon)&&Number.isFinite(p.lat))coords.push([p.lon,p.lat])}
