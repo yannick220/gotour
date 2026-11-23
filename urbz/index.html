@@ -727,6 +727,23 @@ function tileKey(x,y){return x+':'+y}
 function currentCell(){
  const at=map.getCenter(),x=tileIndex(at.lng,at.lat)[0],y=tileIndex(at.lng,at.lat)[1];
  const box=tileBBox(x,y),mid=[(box[0]+box[2])/2,(box[1]+box[3])/2];
+ // A pitched camera sees well beyond its center tile. Include all visible
+ // ground corners (plus a small margin) in the footprint request.
+ const w=map.getContainer().clientWidth,h=map.getContainer().clientHeight;
+ if(w>0&&h>0){
+  const corners=[[0,0],[w,0],[0,h],[w,h]].map(p=>map.unproject(p));
+  const lngs=corners.map(p=>p.lng).filter(Number.isFinite);
+  const lats=corners.map(p=>p.lat).filter(Number.isFinite);
+  if(lngs.length===4&&lats.length===4){
+   const padLat=75/111320,padLng=75/(111320*Math.cos(at.lat*Math.PI/180));
+   // Keep a bounded query to avoid oversized OSM downloads at high pitch.
+   const limitLat=850/111320,limitLng=850/(111320*Math.cos(at.lat*Math.PI/180));
+   box[0]=Math.max(at.lng-limitLng,Math.min(box[0],...lngs)-padLng);
+   box[1]=Math.max(at.lat-limitLat,Math.min(box[1],...lats)-padLat);
+   box[2]=Math.min(at.lng+limitLng,Math.max(box[2],...lngs)+padLng);
+   box[3]=Math.min(at.lat+limitLat,Math.max(box[3],...lats)+padLat);
+  }
+ }
  return {key:tileKey(x,y),bbox:box,point:mid};
 }
 // Cache local des centres connus ; utile pour rouvrir une propriété hors de la cellule courante.
@@ -841,7 +858,7 @@ function setArea(c){
 }
 map.on('load',()=>{
  map.addSource(FULL,{type:'geojson',data:EMPTY});
- map.addLayer({id:FULL_LAYER,type:'fill-extrusion',source:FULL,layout:{visibility:'none'},paint:{'fill-extrusion-color':'#ffffff','fill-extrusion-height':['get','visual_height'],'fill-extrusion-base':0,'fill-extrusion-opacity':1,'fill-extrusion-vertical-gradient':false}});
+ map.addLayer({id:FULL_LAYER,type:'fill-extrusion',source:FULL,layout:{visibility:'none'},paint:{'fill-extrusion-color':'#ffffff','fill-extrusion-height':['get','visual_height'],'fill-extrusion-base':0,'fill-extrusion-opacity':1,'fill-extrusion-vertical-gradient':false,'fill-extrusion-height-transition':{duration:0,delay:0},'fill-extrusion-opacity-transition':{duration:0,delay:0}}});
  setArea(DEMO_CENTER);
 });
 map.on('moveend',()=>{
