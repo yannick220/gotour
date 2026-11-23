@@ -800,6 +800,9 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
 .siiz-external-symbol{display:flex;align-items:center;justify-content:center}.siiz-external-symbol svg{display:block;width:27px;height:27px}
 /* Consistent typography for the floating SIIZ mode controller. */
 .siiz-external-mode,.siiz-external-mode button,.siiz-external-mode input,.siiz-external-mode label,.siiz-external-mode span{font-family:'Montserrat Alternates',Arial,sans-serif!important}
+/* SIIZ home-screen-style app icon inside the selected yellow app tile. */
+.go-store-app .siiz-app-icon{background:#11130f;border-radius:14px;overflow:hidden}
+.go-store-app .siiz-app-icon img{display:block;width:35px;height:35px;object-fit:contain}
 </style></head><body><div id="stage">
 <div class="menu-area" id="menuArea"><button class="menu-trigger" id="menuTrigger" aria-expanded="false">☰ MENU</button><div class="menu-panel" id="menuPanel"><div class="menu-heading">ALLER DIRECTEMENT À UNE PAGE</div><button data-go="0">Accueil</button><button data-go="1">Le dispositif</button><button data-go="2">Les contraintes</button><button data-go="3">Les applications</button><button data-go="4">L’architecture</button><button data-go="5">L’IA générative</button><button data-go="6">Le parcours</button><button data-go="7">Quelques exemples</button></div></div>
 <div class="nav"><button id="prev" aria-label="Précédent">‹</button><button id="next" aria-label="Suivant">›</button><button id="full" aria-label="Agrandir l’écran" title="Agrandir l’écran"><svg class="fullscreen-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3V9 M15 3H21V9 M3 15V21H9 M15 21H21V15"/></svg></button></div>
@@ -861,7 +864,7 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
 <div class="eyebrow">GO! TOUR · GO! STORE</div>
 <h2 class="heading">QUELQUES EXEMPLES</h2>
 <div class="workarea go-store-workarea">
-<div class="go-store-list" role="group" aria-label="Exemples d'applications"><button type="button" class="go-store-app selected" data-demo-app="siiz" aria-pressed="true"><span class="go-store-app-icon">S</span><span class="go-store-app-copy"><b>SIIZ</b><small>Le contact, à bonne distance.</small></span></button>
+<div class="go-store-list" role="group" aria-label="Exemples d'applications"><button type="button" class="go-store-app selected" data-demo-app="siiz" aria-pressed="true"><span class="go-store-app-icon siiz-app-icon"><img src="https://yannick220.github.io/siizapp/assets/siiz-logo.svg?v=union91-79bb567" alt="" aria-hidden="true"></span><span class="go-store-app-copy"><b>SIIZ</b><small>Le contact, à bonne distance.</small></span></button>
 <button type="button" class="go-store-app" data-demo-app="nyx" aria-pressed="false"><span class="go-store-app-icon">✦</span><span class="go-store-app-copy"><b>NYX</b><small>Votre constellation de voyage.</small></span></button>
 <button type="button" class="go-store-app" data-demo-app="post" aria-pressed="false"><span class="go-store-app-icon">✉</span><span class="go-store-app-copy"><b>POST</b><small>Une carte postale qui voyage.</small></span></button>
 <button type="button" class="go-store-app" data-demo-app="ekoa" aria-pressed="false"><span class="go-store-app-icon">◉</span><span class="go-store-app-copy"><b>EKOA</b><small>Votre empreinte, votre forêt.</small></span></button>
