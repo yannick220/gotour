@@ -755,6 +755,11 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
 .go-store-scene.demo-focused .go-store-demo-story p strong{
  color:var(--yellow)!important;font-weight:900!important;
 }
+
+/* The SIIZ presentation caption must receive the triple-click shortcut. */
+.go-store-scene.demo-focused .go-store-demo-story.siiz-active{pointer-events:auto!important}
+.go-store-scene.demo-focused .go-store-demo-story.siiz-active .go-store-story-brand,
+.go-store-scene.demo-focused .go-store-demo-story.siiz-active h3{cursor:pointer;user-select:none}
 </style></head><body><div id="stage">
 <div class="menu-area" id="menuArea"><button class="menu-trigger" id="menuTrigger" aria-expanded="false">☰ MENU</button><div class="menu-panel" id="menuPanel"><div class="menu-heading">ALLER DIRECTEMENT À UNE PAGE</div><button data-go="0">Accueil</button><button data-go="1">Le dispositif</button><button data-go="2">Les contraintes</button><button data-go="3">Les applications</button><button data-go="4">L’architecture</button><button data-go="5">L’IA générative</button><button data-go="6">Le parcours</button><button data-go="7">Quelques exemples</button></div></div>
 <div class="nav"><button id="prev" aria-label="Précédent">‹</button><button id="next" aria-label="Suivant">›</button><button id="full" aria-label="Agrandir l’écran" title="Agrandir l’écran"><svg class="fullscreen-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3V9 M15 3H21V9 M3 15V21H9 M15 21H21V15"/></svg></button></div>
@@ -823,7 +828,7 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
 <button type="button" class="go-store-app" data-demo-app="picti" aria-pressed="false"><span class="go-store-app-icon">▣</span><span class="go-store-app-copy"><b>PICTI</b><small>Le passé au même endroit.</small></span></button>
 <button type="button" class="go-store-app" data-demo-app="nazca" aria-pressed="false"><span class="go-store-app-icon">↝</span><span class="go-store-app-copy"><b>NAZCA+</b><small>Dessinez votre itinéraire.</small></span></button>
 <button type="button" class="go-store-app" data-demo-app="one" aria-pressed="false"><span class="go-store-app-icon">◌</span><span class="go-store-app-copy"><b>ONE</b><small>24 photos, un seul voyage.</small></span></button></div>
-<div class="go-store-preview" id="goStorePreviewShell"><iframe id="goStorePreview" title="Aperçu SIIZ" src="https://yannick220.github.io/siizapp/store.html?embed=1&amp;app=siiz&amp;v=profilemode-20261123-40b16eb" loading="lazy"></iframe><button class="go-store-launch" id="goStoreLaunch" aria-label="Agrandir la démonstration"></button></div>
+<div class="go-store-preview" id="goStorePreviewShell"><iframe id="goStorePreview" title="Aperçu SIIZ" src="https://yannick220.github.io/siizapp/store.html?embed=1&amp;app=siiz&amp;v=tripleclick-20261123-1" loading="lazy"></iframe><button class="go-store-launch" id="goStoreLaunch" aria-label="Agrandir la démonstration"></button></div>
 </div>
 <button class="go-store-exit" id="goStoreExit" aria-label="Quitter la démonstration">×</button><div class="go-store-demo-story" id="goStoreDemoStory"><div class="go-store-story-brand"><img src="https://yannick220.github.io/siizapp/assets/siiz-logo.svg" alt=""><strong>siiz</strong></div><h3>LE CONTACT,<span>À BONNE DISTANCE.</span></h3><p>En voyage, profitez de ceux qui sont là. SIIZ met naturellement à distance les conversations avec ceux qui sont restés chez eux, sans jamais couper le lien.<br><br>Envie de les retrouver ? Un simple glissement de doigt suffit pour se reconnecter.<br><br><strong>Déconnecté par défaut. Connecté par choix.</strong></p></div><strong class="go-store-demo-name" id="goStoreActiveName">SIIZ</strong>
 </section>
@@ -990,13 +995,21 @@ const storeLaunch=document.getElementById('goStoreLaunch');
 const storeName=document.getElementById('goStoreActiveName');
 function storeClose(){storeScene.classList.remove('demo-focused');document.body.classList.remove('go-store-demo-running')}
 function storeOpen(){document.getElementById('goStoreDemoStory').classList.toggle('siiz-active',storeName.textContent.trim().toLowerCase()==='siiz');storeScene.classList.add('demo-focused');document.body.classList.add('go-store-demo-running');storeExit.focus({preventScroll:true})}
+/* Triple-click the visible SIIZ story next to the enlarged phone. */
+let siizStoryClicks=0,siizStoryLastClick=0;
+document.getElementById('goStoreDemoStory').addEventListener('click',e=>{
+ if(!storeScene.classList.contains('demo-focused')||storeName.textContent.trim().toLowerCase()!=='siiz')return;
+ if(!e.target.closest('.go-store-story-brand, h3'))return;
+ const time=Date.now();siizStoryClicks=time-siizStoryLastClick<850?siizStoryClicks+1:1;siizStoryLastClick=time;
+ if(siizStoryClicks===3){siizStoryClicks=0;storeFrame.contentWindow?.postMessage({type:'siiz-toggle-pinned-mode'},'https://yannick220.github.io');}
+});
 storeLaunch.addEventListener('click',storeOpen);
 storeExit.addEventListener('click',storeClose);
 document.querySelectorAll('[data-demo-app]').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('[data-demo-app]').forEach(x=>{x.classList.toggle('selected',x===b);x.setAttribute('aria-pressed',String(x===b))});
   storeName.textContent=b.querySelector('b').textContent;
   storeFrame.title='Démonstration '+storeName.textContent;
-  storeFrame.src='https://yannick220.github.io/siizapp/store.html?embed=1&app='+encodeURIComponent(b.dataset.demoApp)+'&v=profilemode-20261123-40b16eb';
+  storeFrame.src='https://yannick220.github.io/siizapp/store.html?embed=1&app='+encodeURIComponent(b.dataset.demoApp)+'&v=tripleclick-20261123-1';
 }));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&storeScene.classList.contains('demo-focused')){storeClose();e.stopImmediatePropagation()}},true);
 document.getElementById('prev').addEventListener('click',storeClose);
