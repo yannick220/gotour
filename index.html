@@ -1274,16 +1274,9 @@ storeLaunch.addEventListener('click',storeOpen);
 storeExit.addEventListener('click',storeClose);
 const conceptApps=new Set(['one','nazca','nyx','post']);
 function conceptPreview(app){
- const base='https://yannick220.github.io/gotour/assets/';
- const items={
-  one:{logo:'24-logo.svg',bg:'#655346',fg:'#fff7e8'},
-  nazca:{logo:'nazca-logo.svg',bg:'#608c29',fg:'#ffffff'},
-  post:{logo:'post-logo.svg',bg:'#a34248',fg:'#ffffff'},
-  nyx:{logo:'nyx-logo.svg',bg:'#0a1325',fg:'#ffffff'},
-  urbx:{logo:'urbz-logo.svg',bg:'#ebf0eb',fg:'#111719'}
- };
- const c=items[app]||items.one;
- return '<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>*{box-sizing:border-box}html,body{height:100%;margin:0}body{background:'+c.bg+';display:grid;place-items:center}.logo{width:min(38vw,180px);height:min(38vw,180px);object-fit:contain;filter:brightness(0) invert(1)}</style><img class="logo" src="'+base+c.logo+'" alt="Logo"></html>';
+ // The enlarged presentation must use exactly the same logo and background
+ // as the small phone on "Quelques exemples", without an additional wordmark.
+ return storeLogoPreview(app);
 }
 function loadStoreAppForOpening(app){
  storeFrame.dataset.needsReload='0';
@@ -1321,8 +1314,8 @@ function storeLogoPreview(app){
  };
  const themes={
   one:{bg:'#655346',fg:'#fff7e8',filter:'brightness(0) invert(1)'},
-  nazca:{bg:'#608c29',fg:'#ffffff',filter:'none'},
-  nyx:{bg:'#0a1325',fg:'#ffffff',filter:'none'},
+  nazca:{bg:'#608c29',fg:'#ffffff',filter:'brightness(0) invert(1)'},
+  nyx:{bg:'#0a1325',fg:'#ffffff',filter:'brightness(0) invert(1)'},
   post:{bg:'#a34248',fg:'#ffffff',filter:'brightness(0) invert(1)'},
   siiz:{bg:'#ffffff',fg:'#ffd335',filter:'brightness(0) saturate(100%) invert(80%) sepia(80%) saturate(600%) hue-rotate(350deg)'},
   urbx:{bg:'#ebf0eb',fg:'#ffffff',filter:'brightness(0) invert(1)'},
