@@ -446,7 +446,7 @@ const CARD_KINDS={aquarium:'Aquarium',gymnase:'Gymnase du LH',externat:'Externat
 // Identifiants de cartes communiqués pour la démonstration : 5 derniers caractères de leur référence URBZ.
 const KNOWN_CODES={PON75:'aquarium',FOF8U:'gymnase',DK48O:'externat',WAYX7:'internat',EMK5C:'bowling',EW2EM:'auberge',BCNEL:'tribord'};
 const FIXED_CATEGORIES={aquarium:'patrimoine',gymnase:'services',externat:'services',internat:'services',bowling:'services',auberge:'services',tribord:'patrimoine'};
-function knownKind(id){return String(id).includes('way/119832587')?'aquarium':KNOWN_CODES[hashStable(id).slice(-5)]||null}
+function knownKind(id){return KNOWN_CODES[hashStable(id).slice(-5)]||null}
 const CARDS_KEY='urbz-cartes-lycee-hotelier-v1',ECONOMY_KEY='urbz-economie-demo-v1';
 const CATEGORIES={services:{name:'Services',color:'#EFA1A3',factor:1},habitat:{name:'Résidentiel',color:'#8CBCEB',factor:1.3},patrimoine:{name:'Patrimoine',color:'#D6AF56',factor:6},unclassified:{name:'Non classé',color:'#C9CFD5',factor:1}};
 const DEMO_PRICES={aquarium:185000,gymnase:4600,externat:7800,internat:5900,bowling:6100,auberge:6800,tribord:5200};
@@ -495,8 +495,7 @@ function paint(){
  }
  if(selectedId){expr.push(selectedId,CATEGORIES[categoryOf(selectedId)].color)}
  expr.push('#ffffff');
- map.setFilter('urbz-selected-volumes',['in',['get','ekoa_id'],['literal',[...(showMyBuildings?Object.keys(economy.owned):[]),...(selectedId?[selectedId]:[])]]]);
- map.setPaintProperty('urbz-selected-volumes','fill-extrusion-color',expr.length===3?'#D6AF56':expr);
+ map.setPaintProperty(FULL_LAYER,'fill-extrusion-color',expr.length===3?'#ffffff':expr);
 }
 function persist(){try{localStorage.setItem(storageKey(center),JSON.stringify({selected:selectedId}))}catch{}}
 function setSelected(id){travelToken++;if(id&&!buildings.has(id))return;if(id===selectedId){selectedId=null;history.push(id)}else{history.push(selectedId);selectedId=id}persist();paint();if(selectedId){expanded=false;openSheet('building')}else closeSheet()}
@@ -513,12 +512,10 @@ function pointInRing(point,ring){let inside=false;const x=point[0],y=point[1];
 }
 function validBuilding(tags){return !!tags && !!tags.building && tags.building!=='no' && tags.building!=='construction' && tags.building!=='proposed'}
 function visualHeight(tags){
- // Preserve documented OSM heights; never flatten distinct buildings to a
- // common minimum or exaggerate measured heights by a fixed multiplier.
- const read=s=>Number.parseFloat(String(s??'').trim().replace(',','.'));
- const height=read(tags?.height),levels=read(tags?.['building:levels']);
- const h=Number.isFinite(height)&&height>0?height:Number.isFinite(levels)&&levels>0?levels*3:9;
- return Math.max(2,h);
+ const read=s=>Number.parseFloat(String(s??'').replace(',','.'));
+ const height=read(tags.height),levels=read(tags['building:levels']);
+ const h=Number.isFinite(height)&&height>0?height:Number.isFinite(levels)&&levels>0?levels*3:12;
+ return Math.min(150,Math.max(18,h*1.75));
 }
 function geometryWay(w,nodes){const coords=[];
  if(w.geometry){for(const p of w.geometry)if(Number.isFinite(p.lon)&&Number.isFinite(p.lat))coords.push([p.lon,p.lat])}
@@ -763,8 +760,8 @@ function useCurrentBuildings(){
  map.getSource(FULL).setData({type:'FeatureCollection',features:connected.features});
  if(map.getZoom()>=15.5){
   map.setLayoutProperty(FULL_LAYER,'visibility','visible');
-  map.setLayoutProperty('tile-volumes','visibility','visible');
-  map.setLayoutProperty('tile-outline','visibility','visible');
+  map.setLayoutProperty('tile-volumes','visibility','none');
+  map.setLayoutProperty('tile-outline','visibility','none');
  }
  ready=true;paint();
  if(view==='building'&&selectedId&&!buildings.has(selectedId)){
@@ -791,8 +788,8 @@ function refreshViewport(force=false){
  currentCellKey=cell.key;
  if(tileCache.has(cell.key)){
   map.setLayoutProperty(FULL_LAYER,'visibility','visible');
-  map.setLayoutProperty('tile-volumes','visibility','visible');
-  map.setLayoutProperty('tile-outline','visibility','visible');
+  map.setLayoutProperty('tile-volumes','visibility','none');
+  map.setLayoutProperty('tile-outline','visibility','none');
   return;
  }
  // Pendant le déplacement, montrer le rendu natif des bâtiments et non un trou dans la carte.
@@ -843,58 +840,30 @@ function setArea(c){
 }
 map.on('load',()=>{
  map.addSource(FULL,{type:'geojson',data:EMPTY});
- map.addLayer({id:FULL_LAYER,type:'fill-extrusion',source:FULL,layout:{visibility:'none'},paint:{'fill-extrusion-color':'#ffffff','fill-extrusion-height':['get','visual_height'],'fill-extrusion-base':0,'fill-extrusion-opacity':0.015,'fill-extrusion-vertical-gradient':false}});
- map.addLayer({id:'urbz-selected-volumes',type:'fill-extrusion',source:FULL,filter:['==',['get','ekoa_id'],'__none__'],paint:{'fill-extrusion-color':'#D6AF56','fill-extrusion-height':['get','visual_height'],'fill-extrusion-base':0,'fill-extrusion-opacity':0.92}});
+ map.addLayer({id:FULL_LAYER,type:'fill-extrusion',source:FULL,layout:{visibility:'none'},paint:{'fill-extrusion-color':'#ffffff','fill-extrusion-height':['get','visual_height'],'fill-extrusion-base':0,'fill-extrusion-opacity':1,'fill-extrusion-vertical-gradient':false}});
  setArea(DEMO_CENTER);
 });
 map.on('moveend',()=>{
  clearTimeout(viewTimer);
  viewTimer=setTimeout(()=>refreshViewport(),350);
 });
-// La couche native est celle qui est réellement visible : la sélection doit
-// fonctionner sur ses façades 3D, pas seulement sur une couche OSM transparente.
-function pickConnectedBlock(screenPoint){
- if(!ready||map.getZoom()<15.5)return null;
- const nativeHits=map.queryRenderedFeatures(screenPoint,{layers:['tile-volumes']});
- const fullHits=map.getLayoutProperty(FULL_LAYER,'visibility')==='visible'
-  ?map.queryRenderedFeatures(screenPoint,{layers:[FULL_LAYER,'urbz-selected-volumes']}):[];
- for(const hit of fullHits){
-  const id=String(hit.properties?.ekoa_id||'');
-  if(id&&buildings.has(id))return id;
- }
- // Les polygones des tuiles et ceux de l'API OSM représentent les mêmes
- // empreintes au sol. On rattache chaque facette native à son bloc connexe.
- for(const hit of nativeHits){
-  const geometry=hit.geometry;
-  const polys=geometry?.type==='Polygon'?[geometry.coordinates]:geometry?.type==='MultiPolygon'?geometry.coordinates:[];
-  for(const poly of polys){
-   const ring=poly?.[0];
-   if(!ring?.length)continue;
-   const sample=ring.slice(0,-1);
-   const centroid=[sample.reduce((v,p)=>v+p[0],0)/sample.length,sample.reduce((v,p)=>v+p[1],0)/sample.length];
-   for(const [id,group] of buildings){
-    for(const part of group.geometry.coordinates){
-     if(pointInRing(centroid,part[0]))return id;
-    }
-   }
-  }
- }
- return null;
-}
 map.on('click',e=>{
- const id=pickConnectedBlock(e.point);
- if(id){setSelected(id);return}
- if(view){
+ // La carte reste manipulable, même quand un écran secondaire est ouvert.
+ // Un glissement tourne ou déplace la carte : seuls les véritables clics arrivent ici.
+ const canPick=ready&&map.getZoom()>=15.5&&map.getLayer(FULL_LAYER)&&map.getLayoutProperty(FULL_LAYER,'visibility')==='visible';
+ const hits=canPick?map.queryRenderedFeatures(e.point,{layers:[FULL_LAYER]}):[];
+ const id=hits.length?String(hits[0]?.properties?.ekoa_id||''):null;
+ if(id&&buildings.has(id)){
+  setSelected(id);
+ }else if(view){
+  // Un clic sur la carte, hors bâtiment, referme seulement la fiche.
   if(view==='building'){selectedId=null;persist();paint()}
   closeSheet();
- }else if(!ready){
-  toast('Chargement des bâtiments en cours…',3);
+ }else if(!canPick){
+  toast('Rapprochez-vous d’un bâtiment pour le sélectionner.',3);
  }
 });
-map.on('mousemove',e=>{
- const hits=map.getZoom()>=15.5?map.queryRenderedFeatures(e.point,{layers:['tile-volumes']}):[];
- map.getCanvas().style.cursor=hits.length?'pointer':'grab';
-});
+map.on('mousemove',e=>{const hits=ready&&map.getZoom()>=15.5&&map.getLayoutProperty(FULL_LAYER,'visibility')==='visible'?map.queryRenderedFeatures(e.point,{layers:[FULL_LAYER]}):[];map.getCanvas().style.cursor=hits.length?'pointer':'grab'});
 // Écrans mobiles, fidèles au fonctionnement GOT : carte principale + panneaux inférieurs.
 function openSheet(which){
  view=which;
@@ -932,8 +901,6 @@ function searchRows(){const q=searchTerm.trim().toLocaleLowerCase('fr');let ids=
 // Recherche : géolocalisation d'un bâtiment nommé, sans liste de résultats.
 const SEARCH_CACHE_KEY='urbz-index-noms-v1';
 let searchIndex=readJSON(SEARCH_CACHE_KEY,{}),searchTimer=null,searchSequence=0;
-// Position du bâtiment OSM way/119832587 : permet la recherche avant chargement des tuiles.
-searchIndex.aquarium={name:'Aquarium',lon:-1.15061,lat:46.15329,id:null};
 function normalizedSearch(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('fr').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim()}
 function buildingMidpoint(group){
  const polygons=group?.geometry?.coordinates||[];
