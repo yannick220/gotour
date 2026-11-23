@@ -760,6 +760,28 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
 .go-store-scene.demo-focused .go-store-demo-story.siiz-active{pointer-events:auto!important}
 .go-store-scene.demo-focused .go-store-demo-story.siiz-active .go-store-story-brand,
 .go-store-scene.demo-focused .go-store-demo-story.siiz-active h3{cursor:pointer;user-select:none}
+
+/* External simulator, outside the phone's clipping and viewport. */
+.siiz-external-mode[hidden],.siiz-external-scale[hidden]{display:none!important}
+.go-store-scene.demo-focused .siiz-external-mode{
+ display:block;position:absolute;left:max(14px,calc(50% - 470px));bottom:30px;
+ width:260px;z-index:22;background:#fff;color:#182b2b;border:1px solid #e0e4dc;
+ border-radius:22px;padding:20px 15px 16px;box-shadow:0 16px 42px #0005;
+ font-family:Montserrat,Arial,sans-serif
+}
+.siiz-external-title{font-size:12px;font-weight:850;letter-spacing:.1em;margin-bottom:15px}
+.siiz-external-close{position:absolute;right:9px;top:8px;border:0;background:#f0f1ec;
+ width:27px;height:27px;border-radius:50%;font-size:20px;cursor:pointer;color:#182b2b}
+.siiz-external-options{display:flex;gap:7px}
+.siiz-external-options button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:5px;border:1px solid #e0e4dc;background:#f3f4f0;border-radius:999px;
+ min-height:70px;font:700 12px Montserrat,Arial,sans-serif;color:#182b2b;cursor:pointer}
+.siiz-external-options button.selected{background:#ffd335;border-color:#ffd335}
+.siiz-external-symbol{font-size:23px;line-height:1}
+.siiz-external-scale{padding:17px 4px 0}
+.siiz-external-scale label{display:block;font-size:11px;font-weight:700;margin-bottom:11px}
+.siiz-external-scale input{width:100%;accent-color:#ffd335}
+.siiz-external-labels{display:flex;justify-content:space-between;font-size:10px;color:#64716b;margin-top:5px}
 </style></head><body><div id="stage">
 <div class="menu-area" id="menuArea"><button class="menu-trigger" id="menuTrigger" aria-expanded="false">☰ MENU</button><div class="menu-panel" id="menuPanel"><div class="menu-heading">ALLER DIRECTEMENT À UNE PAGE</div><button data-go="0">Accueil</button><button data-go="1">Le dispositif</button><button data-go="2">Les contraintes</button><button data-go="3">Les applications</button><button data-go="4">L’architecture</button><button data-go="5">L’IA générative</button><button data-go="6">Le parcours</button><button data-go="7">Quelques exemples</button></div></div>
 <div class="nav"><button id="prev" aria-label="Précédent">‹</button><button id="next" aria-label="Suivant">›</button><button id="full" aria-label="Agrandir l’écran" title="Agrandir l’écran"><svg class="fullscreen-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3V9 M15 3H21V9 M3 15V21H9 M15 21H21V15"/></svg></button></div>
@@ -828,7 +850,15 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
 <button type="button" class="go-store-app" data-demo-app="picti" aria-pressed="false"><span class="go-store-app-icon">▣</span><span class="go-store-app-copy"><b>PICTI</b><small>Le passé au même endroit.</small></span></button>
 <button type="button" class="go-store-app" data-demo-app="nazca" aria-pressed="false"><span class="go-store-app-icon">↝</span><span class="go-store-app-copy"><b>NAZCA+</b><small>Dessinez votre itinéraire.</small></span></button>
 <button type="button" class="go-store-app" data-demo-app="one" aria-pressed="false"><span class="go-store-app-icon">◌</span><span class="go-store-app-copy"><b>ONE</b><small>24 photos, un seul voyage.</small></span></button></div>
-<div class="go-store-preview" id="goStorePreviewShell"><iframe id="goStorePreview" title="Aperçu SIIZ" src="https://yannick220.github.io/siizapp/store.html?embed=1&amp;app=siiz&amp;v=tripleclick-20261123-1" loading="lazy"></iframe><button class="go-store-launch" id="goStoreLaunch" aria-label="Agrandir la démonstration"></button></div>
+<div class="siiz-external-mode" id="siizExternalMode" hidden>
+<button type="button" class="siiz-external-close" id="siizExternalClose" aria-label="Fermer les modes">×</button>
+<div class="siiz-external-title">MODE</div>
+<div class="siiz-external-options">
+<button type="button" data-siiz-external-mode="home" class="selected"><span class="siiz-external-symbol">⌂</span>Domicile</button>
+<button type="button" data-siiz-external-mode="travel"><span class="siiz-external-symbol">✈</span>Voyage</button>
+</div>
+<div class="siiz-external-scale" id="siizExternalScale" hidden><label for="siizExternalRange">Échelle des distances</label><input type="range" id="siizExternalRange" min="0" max="1000" value="685" step="1"><div class="siiz-external-labels"><span>Domicile</span><span>Vacances</span></div></div>
+</div><div class="go-store-preview" id="goStorePreviewShell"><iframe id="goStorePreview" title="Aperçu SIIZ" src="https://yannick220.github.io/siizapp/store.html?embed=1&amp;app=siiz&amp;v=externalmode-20261123-1495ebe" loading="lazy"></iframe><button class="go-store-launch" id="goStoreLaunch" aria-label="Agrandir la démonstration"></button></div>
 </div>
 <button class="go-store-exit" id="goStoreExit" aria-label="Quitter la démonstration">×</button><div class="go-store-demo-story" id="goStoreDemoStory"><div class="go-store-story-brand"><img src="https://yannick220.github.io/siizapp/assets/siiz-logo.svg" alt=""><strong>siiz</strong></div><h3>LE CONTACT,<span>À BONNE DISTANCE.</span></h3><p>En voyage, profitez de ceux qui sont là. SIIZ met naturellement à distance les conversations avec ceux qui sont restés chez eux, sans jamais couper le lien.<br><br>Envie de les retrouver ? Un simple glissement de doigt suffit pour se reconnecter.<br><br><strong>Déconnecté par défaut. Connecté par choix.</strong></p></div><strong class="go-store-demo-name" id="goStoreActiveName">SIIZ</strong>
 </section>
@@ -993,15 +1023,30 @@ const storeFrame=document.getElementById('goStorePreview');
 const storeExit=document.getElementById('goStoreExit');
 const storeLaunch=document.getElementById('goStoreLaunch');
 const storeName=document.getElementById('goStoreActiveName');
-function storeClose(){storeScene.classList.remove('demo-focused');document.body.classList.remove('go-store-demo-running')}
+function storeClose(){siizExternalPanel.hidden=true;storeScene.classList.remove('demo-focused');document.body.classList.remove('go-store-demo-running')}
 function storeOpen(){document.getElementById('goStoreDemoStory').classList.toggle('siiz-active',storeName.textContent.trim().toLowerCase()==='siiz');storeScene.classList.add('demo-focused');document.body.classList.add('go-store-demo-running');storeExit.focus({preventScroll:true})}
 /* Triple-click the visible SIIZ story next to the enlarged phone. */
+const siizExternalPanel=document.getElementById('siizExternalMode');
+const siizExternalScale=document.getElementById('siizExternalScale');
+function siizSendExternal(data){
+ storeFrame.contentWindow?.postMessage(data,'https://yannick220.github.io');
+}
+siizExternalPanel.querySelectorAll('[data-siiz-external-mode]').forEach(button=>button.addEventListener('click',()=>{
+ const travel=button.dataset.siizExternalMode==='travel';
+ siizExternalPanel.querySelectorAll('[data-siiz-external-mode]').forEach(b=>b.classList.toggle('selected',b===button));
+ siizExternalScale.hidden=!travel;
+ siizSendExternal({type:'siiz-demo-set-mode',travel});
+}));
+document.getElementById('siizExternalRange').addEventListener('input',e=>{
+ siizSendExternal({type:'siiz-demo-set-scale',value:Number(e.target.value)});
+});
+document.getElementById('siizExternalClose').addEventListener('click',()=>{siizExternalPanel.hidden=true});
 let siizStoryClicks=0,siizStoryLastClick=0;
 document.getElementById('goStoreDemoStory').addEventListener('click',e=>{
  if(!storeScene.classList.contains('demo-focused')||storeName.textContent.trim().toLowerCase()!=='siiz')return;
  if(!e.target.closest('.go-store-story-brand, h3'))return;
  const time=Date.now();siizStoryClicks=time-siizStoryLastClick<850?siizStoryClicks+1:1;siizStoryLastClick=time;
- if(siizStoryClicks===3){siizStoryClicks=0;storeFrame.contentWindow?.postMessage({type:'siiz-toggle-pinned-mode'},'https://yannick220.github.io');}
+ if(siizStoryClicks===3){siizStoryClicks=0;siizExternalPanel.hidden=!siizExternalPanel.hidden;}
 });
 storeLaunch.addEventListener('click',storeOpen);
 storeExit.addEventListener('click',storeClose);
@@ -1009,7 +1054,7 @@ document.querySelectorAll('[data-demo-app]').forEach(b=>b.addEventListener('clic
   document.querySelectorAll('[data-demo-app]').forEach(x=>{x.classList.toggle('selected',x===b);x.setAttribute('aria-pressed',String(x===b))});
   storeName.textContent=b.querySelector('b').textContent;
   storeFrame.title='Démonstration '+storeName.textContent;
-  storeFrame.src='https://yannick220.github.io/siizapp/store.html?embed=1&app='+encodeURIComponent(b.dataset.demoApp)+'&v=tripleclick-20261123-1';
+  storeFrame.src='https://yannick220.github.io/siizapp/store.html?embed=1&app='+encodeURIComponent(b.dataset.demoApp)+'&v=externalmode-20261123-1495ebe';
 }));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&storeScene.classList.contains('demo-focused')){storeClose();e.stopImmediatePropagation()}},true);
 document.getElementById('prev').addEventListener('click',storeClose);
