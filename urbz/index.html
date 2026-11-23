@@ -809,11 +809,17 @@ function refreshViewport(force=false){
   map.setLayoutProperty('tile-outline','visibility','none');
   return;
  }
- // Au premier chargement, ne jamais afficher les volumes temporaires qui
- // provoquent le flash de hauteurs avant l'arrivée des blocs sélectionnables.
- map.setLayoutProperty(FULL_LAYER,'visibility','none');
- map.setLayoutProperty('tile-volumes','visibility',ready?'visible':'none');
- map.setLayoutProperty('tile-outline','visibility',ready?'visible':'none');
+ // Keep already-loaded, colored blocks visible while the next cell downloads.
+ // Switching to temporary white native tiles here caused the yellow-white-yellow flash.
+ if(!ready){
+  map.setLayoutProperty(FULL_LAYER,'visibility','none');
+  map.setLayoutProperty('tile-volumes','visibility','none');
+  map.setLayoutProperty('tile-outline','visibility','none');
+ }else{
+  map.setLayoutProperty(FULL_LAYER,'visibility','visible');
+  map.setLayoutProperty('tile-volumes','visibility','none');
+  map.setLayoutProperty('tile-outline','visibility','none');
+ }
  if(tileFailed.has(cell.key)&&!force)return;
  // Une seule requête active. Si l'utilisateur se déplace rapidement,
  // on saute les anciens endroits pour ne charger que le dernier.
