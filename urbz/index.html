@@ -843,7 +843,7 @@ function setArea(c){
 }
 map.on('load',()=>{
  map.addSource(FULL,{type:'geojson',data:EMPTY});
- map.addLayer({id:FULL_LAYER,type:'fill',source:FULL,layout:{visibility:'none'},paint:{'fill-color':'#ffffff','fill-opacity':0.01}});
+ map.addLayer({id:FULL_LAYER,type:'fill-extrusion',source:FULL,layout:{visibility:'none'},paint:{'fill-extrusion-color':'#ffffff','fill-extrusion-height':['get','visual_height'],'fill-extrusion-base':0,'fill-extrusion-opacity':0.015,'fill-extrusion-vertical-gradient':false}});
  map.addLayer({id:'urbz-selected-volumes',type:'fill-extrusion',source:FULL,filter:['==',['get','ekoa_id'],'__none__'],paint:{'fill-extrusion-color':'#D6AF56','fill-extrusion-height':['get','visual_height'],'fill-extrusion-base':0,'fill-extrusion-opacity':0.92}});
  setArea(DEMO_CENTER);
 });
