@@ -446,7 +446,7 @@
 <script type="module">import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.19.0/dist/maplibre-gl.mjs';
 const $=id=>document.getElementById(id);
 const DEMO_CENTER=[-1.1601751970930565,46.14314346891054],BASE='osm',FULL='ekoa-complete-osm',FULL_LAYER='ekoa-complete-buildings',EMPTY={type:'FeatureCollection',features:[]},RADIUS=1500,TILE_METERS=480;
-let center=[...DEMO_CENTER],selectedId=null,buildings=new Map(),ready=false,loading=false,requestSeq=0,toastTimer,view=null,expanded=false,marketFilters=new Set(),history=[];
+let center=[...DEMO_CENTER],selectedId=null,buildings=new Map(),ready=false,loading=false,requestSeq=0,toastTimer,view=null,expanded=false,marketFilters=new Set(['loisirs','habitat','services','public']),history=[];
 const CARD_KINDS={mercure:'Hôtel Mercure',museemaritime:'Musée maritime. Espace Encan',mediatek:'Médiathèque. Bibliothèque universitaire',megacgr:'Méga CGR',mcdonalds:'McDonald’s',technoforum:'Technoforum',chambremetiers:'Chambre des métiers',toursaintnicolas:'Tour Saint-Nicolas',cathedrale:'Cathédrale',aquarium:'Aquarium',gymnase:'Gymnase du LH',externat:'Externat du lycée hôtelier',internat:'Internat du LH',bowling:'Bowling',auberge:'Auberge de Jeunesse',tribord:'Tribord Lab'};
 // Identifiants de cartes communiqués pour la démonstration : 5 derniers caractères de leur référence URBZ.
 const KNOWN_CODES={PON75:'mercure',SO9PW:'aquarium',TX632:'museemaritime','6033D':'mediatek',HQMHC:'megacgr','12GP8':'mcdonalds','65UES':'technoforum',AXQJ3:'chambremetiers',U2LKY:'toursaintnicolas','4GW4Z':'cathedrale',FOF8U:'gymnase',DK48O:'externat',WAYX7:'internat',EMK5C:'bowling',EW2EM:'auberge',BCNEL:'tribord'};
