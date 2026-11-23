@@ -982,12 +982,14 @@ function fit(){
  const vv=window.visualViewport;
  const w=vv?Math.min(document.documentElement.clientWidth,vv.width):document.documentElement.clientWidth;
  const h=vv?Math.min(document.documentElement.clientHeight,vv.height):document.documentElement.clientHeight;
- const scaleX=w/1600, scaleY=h/900;
+ const scale=Math.min(w/1600,h/900);
  const cx=vv?vv.offsetLeft+vv.width/2:w/2;
  const cy=vv?vv.offsetTop+vv.height/2:h/2;
  stage.style.left=cx+'px';
  stage.style.top=cy+'px';
- stage.style.transform='translate(-50%,-50%) scale('+scaleX+','+scaleY+')';
+ stage.style.width=(w/scale)+'px';
+ stage.style.height=(h/scale)+'px';
+ stage.style.transform='translate(-50%,-50%) scale('+scale+')';
 }
 addEventListener('resize',fit);
 addEventListener('orientationchange',fit);
