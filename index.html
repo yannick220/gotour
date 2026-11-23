@@ -920,6 +920,13 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
 /* Exact sampled reference colors for URBZ and ZUNO. */
 .go-store-list .go-store-app[data-demo-app="urbx"]{--project-bg:#ebf0eb;--project-text:#111719}
 .go-store-list .go-store-app[data-demo-app="zuno"]{--project-bg:#0d1120}
+
+/* URBZ selected tile: dark text, logo and demo indicator on pale background. */
+.go-store-list .go-store-app[data-demo-app="urbx"].selected,
+.go-store-list .go-store-app[data-demo-app="urbx"].selected .go-store-demo-indicator{color:#111719!important;--project-text:#111719;--project-logo:#111719}
+.go-store-list .go-store-app[data-demo-app="urbx"].selected .go-store-app-icon{color:#111719!important}
+.go-store-list .go-store-app[data-demo-app="urbx"].selected .go-store-app-icon img{filter:brightness(0)!important}
+.go-store-list .go-store-app[data-demo-app="urbx"].selected .go-store-demo-indicator svg{fill:#111719!important;color:#111719!important}
 </style></head><body><div id="stage">
 <div class="menu-area" id="menuArea"><button class="menu-trigger" id="menuTrigger" aria-expanded="false">☰ MENU</button><div class="menu-panel" id="menuPanel"><div class="menu-heading">ALLER DIRECTEMENT À UNE PAGE</div><button data-go="0">Accueil</button><button data-go="1">Le dispositif</button><button data-go="2">Les contraintes</button><button data-go="3">Les applications</button><button data-go="4">L’architecture</button><button data-go="5">L’IA générative</button><button data-go="6">Le parcours</button><button data-go="7">Quelques exemples</button></div></div>
 <div class="nav"><button id="prev" aria-label="Précédent">‹</button><button id="next" aria-label="Suivant">›</button><button id="full" aria-label="Agrandir l’écran" title="Agrandir l’écran"><svg class="fullscreen-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3V9 M15 3H21V9 M3 15V21H9 M15 21H21V15"/></svg></button></div>
