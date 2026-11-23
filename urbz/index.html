@@ -444,7 +444,7 @@ const DEMO_CENTER=[-1.1601751970930565,46.14314346891054],BASE='osm',FULL='ekoa-
 let center=[...DEMO_CENTER],selectedId=null,buildings=new Map(),ready=false,loading=false,requestSeq=0,toastTimer,view=null,expanded=false,marketFilter='patrimoine',history=[];
 const CARD_KINDS={gymnase:'Gymnase du LH',externat:'Externat du lycée hôtelier',internat:'Internat du LH',bowling:'Bowling',auberge:'Auberge de Jeunesse',tribord:'Tribord Lab'};
 // Identifiants de cartes communiqués pour la démonstration : 5 derniers caractères de leur référence URBZ.
-const KNOWN_CODES={FOF8U:'gymnase',DK480:'externat',WAYX7:'internat',EMK5C:'bowling',EW2EM:'auberge',BCNEL:'tribord'};
+const KNOWN_CODES={FOF8U:'gymnase',DK48O:'externat',WAYX7:'internat',EMK5C:'bowling',EW2EM:'auberge',BCNEL:'tribord'};
 const FIXED_CATEGORIES={gymnase:'services',externat:'services',internat:'services',bowling:'services',auberge:'services',tribord:'patrimoine'};
 function knownKind(id){return KNOWN_CODES[hashStable(id).slice(-5)]||null}
 const CARDS_KEY='urbz-cartes-lycee-hotelier-v1',ECONOMY_KEY='urbz-economie-demo-v1';
