@@ -873,7 +873,7 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
 <button type="button" data-siiz-external-mode="travel"><span class="siiz-external-symbol">✈</span>Voyage</button>
 </div>
 <div class="siiz-external-scale" id="siizExternalScale" hidden><label for="siizExternalRange">Échelle des distances</label><input type="range" id="siizExternalRange" min="0" max="1000" value="315" step="1"><div class="siiz-external-labels"><span>Domicile</span><span>Vacances</span></div></div>
-</div><div class="go-store-preview" id="goStorePreviewShell"><iframe id="goStorePreview" title="Aperçu SIIZ" src="https://yannick220.github.io/siizapp/store.html?embed=1&amp;app=siiz&amp;v=clara-20261123-13ec2c9" loading="lazy"></iframe><button class="go-store-launch" id="goStoreLaunch" aria-label="Agrandir la démonstration"></button></div>
+</div><div class="go-store-preview" id="goStorePreviewShell"><iframe id="goStorePreview" title="Aperçu SIIZ" src="https://yannick220.github.io/siizapp/store.html?embed=1&amp;app=siiz&amp;v=reset-home-20261123-1" loading="lazy"></iframe><button class="go-store-launch" id="goStoreLaunch" aria-label="Agrandir la démonstration"></button></div>
 </div>
 <button class="go-store-exit" id="goStoreExit" aria-label="Quitter la démonstration">×</button><div class="go-store-demo-story" id="goStoreDemoStory"><div class="go-store-story-brand"><img src="https://yannick220.github.io/siizapp/assets/siiz-logo.svg" alt=""><strong>siiz</strong></div><h3>LE CONTACT,<span>À BONNE DISTANCE.</span></h3><p>En voyage, profitez de ceux qui sont là. SIIZ met naturellement à distance les conversations avec ceux qui sont restés chez eux, sans jamais couper le lien.<br><br>Envie de les retrouver ? Un simple glissement de doigt suffit pour se reconnecter.<br><br><strong>Déconnecté par défaut. Connecté par choix.</strong></p></div><strong class="go-store-demo-name" id="goStoreActiveName">SIIZ</strong>
 </section>
@@ -1038,7 +1038,20 @@ const storeFrame=document.getElementById('goStorePreview');
 const storeExit=document.getElementById('goStoreExit');
 const storeLaunch=document.getElementById('goStoreLaunch');
 const storeName=document.getElementById('goStoreActiveName');
-function storeClose(){siizExternalPanel.hidden=true;storeScene.classList.remove('demo-focused');document.body.classList.remove('go-store-demo-running')}
+function siizResetDemo(){
+ siizExternalPanel.hidden=true;
+ siizExternalPanel.querySelectorAll('[data-siiz-external-mode]').forEach(b=>b.classList.toggle('selected',b.dataset.siizExternalMode==='home'));
+ siizExternalScale.hidden=true;
+ siizExternalRange.value=315;
+ siizUpdateExternalFill();
+ if(storeName.textContent.trim().toLowerCase()==='siiz'){
+   // A fresh nested iframe also resets the conversation view, profile and scale.
+   const url=new URL(storeFrame.src);
+   url.searchParams.set('reset',String(Date.now()));
+   storeFrame.src=url.toString();
+ }
+}
+function storeClose(){siizResetDemo();storeScene.classList.remove('demo-focused');document.body.classList.remove('go-store-demo-running')}
 function storeOpen(){document.getElementById('goStoreDemoStory').classList.toggle('siiz-active',storeName.textContent.trim().toLowerCase()==='siiz');storeScene.classList.add('demo-focused');document.body.classList.add('go-store-demo-running');storeExit.focus({preventScroll:true})}
 /* Triple-click the visible SIIZ story next to the enlarged phone. */
 const siizExternalPanel=document.getElementById('siizExternalMode');
@@ -1091,7 +1104,7 @@ document.getElementById('siizExternalRange').addEventListener('input',e=>{
  siizUpdateExternalFill();
  siizSendExternal({type:'siiz-demo-set-scale',value:Number(e.target.value)});
 });
-document.getElementById('siizExternalClose').addEventListener('click',()=>{siizExternalPanel.hidden=true});
+document.getElementById('siizExternalClose').addEventListener('click',()=>{siizResetDemo()});
 window.addEventListener('message',event=>{
  if(event.origin!=='https://yannick220.github.io'||event.source!==storeFrame.contentWindow||event.data?.type!=='siiz-mode-state')return;
  const travel=event.data.travel===true;
@@ -1113,7 +1126,7 @@ document.querySelectorAll('[data-demo-app]').forEach(b=>b.addEventListener('clic
   document.querySelectorAll('[data-demo-app]').forEach(x=>{x.classList.toggle('selected',x===b);x.setAttribute('aria-pressed',String(x===b))});
   storeName.textContent=b.querySelector('b').textContent;
   storeFrame.title='Démonstration '+storeName.textContent;
-  storeFrame.src='https://yannick220.github.io/siizapp/store.html?embed=1&app='+encodeURIComponent(b.dataset.demoApp)+'&v=clara-20261123-13ec2c9';
+  storeFrame.src='https://yannick220.github.io/siizapp/store.html?embed=1&app='+encodeURIComponent(b.dataset.demoApp)+'&v=reset-home-20261123-1';
 }));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&storeScene.classList.contains('demo-focused')){storeClose();e.stopImmediatePropagation()}},true);
 document.getElementById('prev').addEventListener('click',storeClose);
