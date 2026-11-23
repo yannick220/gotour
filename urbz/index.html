@@ -446,7 +446,7 @@ const CARD_KINDS={aquarium:'Aquarium',gymnase:'Gymnase du LH',externat:'Externat
 // Identifiants de cartes communiqués pour la démonstration : 5 derniers caractères de leur référence URBZ.
 const KNOWN_CODES={PON75:'aquarium',FOF8U:'gymnase',DK48O:'externat',WAYX7:'internat',EMK5C:'bowling',EW2EM:'auberge',BCNEL:'tribord'};
 const FIXED_CATEGORIES={aquarium:'patrimoine',gymnase:'services',externat:'services',internat:'services',bowling:'services',auberge:'services',tribord:'patrimoine'};
-function knownKind(id){return KNOWN_CODES[hashStable(id).slice(-5)]||null}
+function knownKind(id){return String(id).includes('way/119832587')?'aquarium':KNOWN_CODES[hashStable(id).slice(-5)]||null}
 const CARDS_KEY='urbz-cartes-lycee-hotelier-v1',ECONOMY_KEY='urbz-economie-demo-v1';
 const CATEGORIES={services:{name:'Services',color:'#EFA1A3',factor:1},habitat:{name:'Résidentiel',color:'#8CBCEB',factor:1.3},patrimoine:{name:'Patrimoine',color:'#D6AF56',factor:6},unclassified:{name:'Non classé',color:'#C9CFD5',factor:1}};
 const DEMO_PRICES={aquarium:185000,gymnase:4600,externat:7800,internat:5900,bowling:6100,auberge:6800,tribord:5200};
@@ -495,7 +495,8 @@ function paint(){
  }
  if(selectedId){expr.push(selectedId,CATEGORIES[categoryOf(selectedId)].color)}
  expr.push('#ffffff');
- map.setPaintProperty(FULL_LAYER,'fill-extrusion-color',expr.length===3?'#ffffff':expr);
+ map.setFilter('urbz-selected-volumes',['in',['get','ekoa_id'],['literal',[...(showMyBuildings?Object.keys(economy.owned):[]),...(selectedId?[selectedId]:[])]]]);
+ map.setPaintProperty('urbz-selected-volumes','fill-extrusion-color',expr.length===3?'#D6AF56':expr);
 }
 function persist(){try{localStorage.setItem(storageKey(center),JSON.stringify({selected:selectedId}))}catch{}}
 function setSelected(id){travelToken++;if(id&&!buildings.has(id))return;if(id===selectedId){selectedId=null;history.push(id)}else{history.push(selectedId);selectedId=id}persist();paint();if(selectedId){expanded=false;openSheet('building')}else closeSheet()}
@@ -762,8 +763,8 @@ function useCurrentBuildings(){
  map.getSource(FULL).setData({type:'FeatureCollection',features:connected.features});
  if(map.getZoom()>=15.5){
   map.setLayoutProperty(FULL_LAYER,'visibility','visible');
-  map.setLayoutProperty('tile-volumes','visibility','none');
-  map.setLayoutProperty('tile-outline','visibility','none');
+  map.setLayoutProperty('tile-volumes','visibility','visible');
+  map.setLayoutProperty('tile-outline','visibility','visible');
  }
  ready=true;paint();
  if(view==='building'&&selectedId&&!buildings.has(selectedId)){
@@ -790,8 +791,8 @@ function refreshViewport(force=false){
  currentCellKey=cell.key;
  if(tileCache.has(cell.key)){
   map.setLayoutProperty(FULL_LAYER,'visibility','visible');
-  map.setLayoutProperty('tile-volumes','visibility','none');
-  map.setLayoutProperty('tile-outline','visibility','none');
+  map.setLayoutProperty('tile-volumes','visibility','visible');
+  map.setLayoutProperty('tile-outline','visibility','visible');
   return;
  }
  // Pendant le déplacement, montrer le rendu natif des bâtiments et non un trou dans la carte.
@@ -842,7 +843,8 @@ function setArea(c){
 }
 map.on('load',()=>{
  map.addSource(FULL,{type:'geojson',data:EMPTY});
- map.addLayer({id:FULL_LAYER,type:'fill-extrusion',source:FULL,layout:{visibility:'none'},paint:{'fill-extrusion-color':'#ffffff','fill-extrusion-height':['get','visual_height'],'fill-extrusion-base':0,'fill-extrusion-opacity':1,'fill-extrusion-vertical-gradient':false}});
+ map.addLayer({id:FULL_LAYER,type:'fill',source:FULL,layout:{visibility:'none'},paint:{'fill-color':'#ffffff','fill-opacity':0.01}});
+ map.addLayer({id:'urbz-selected-volumes',type:'fill-extrusion',source:FULL,filter:['==',['get','ekoa_id'],'__none__'],paint:{'fill-extrusion-color':'#D6AF56','fill-extrusion-height':['get','visual_height'],'fill-extrusion-base':0,'fill-extrusion-opacity':0.92}});
  setArea(DEMO_CENTER);
 });
 map.on('moveend',()=>{
@@ -903,6 +905,8 @@ function searchRows(){const q=searchTerm.trim().toLocaleLowerCase('fr');let ids=
 // Recherche : géolocalisation d'un bâtiment nommé, sans liste de résultats.
 const SEARCH_CACHE_KEY='urbz-index-noms-v1';
 let searchIndex=readJSON(SEARCH_CACHE_KEY,{}),searchTimer=null,searchSequence=0;
+// Position du bâtiment OSM way/119832587 : permet la recherche avant chargement des tuiles.
+searchIndex.aquarium={name:'Aquarium',lon:-1.15061,lat:46.15329,id:null};
 function normalizedSearch(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('fr').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim()}
 function buildingMidpoint(group){
  const polygons=group?.geometry?.coordinates||[];
