@@ -890,6 +890,10 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
 
 .go-store-app-icon.concept-urbz img{display:block;width:76%;height:76%;object-fit:contain;filter:brightness(0) saturate(100%) invert(82%) sepia(70%) saturate(900%) hue-rotate(350deg)}
 .go-store-demo-story .concept-brand-mark.concept-urbz img{display:block;width:49px;height:49px;object-fit:contain;filter:brightness(0) saturate(100%) invert(82%) sepia(70%) saturate(900%) hue-rotate(350deg)}
+
+/* Same neutral background for all unselected project buttons, including SIIZ. */
+.go-store-list .go-store-app:not(.selected),.go-store-list .go-store-app[data-demo-app="siiz"]:not(.selected){background:#252922!important;color:#fffdf2!important;border-color:#666c5d!important}
+.go-store-list .go-store-app.selected{background:#ffd335!important;color:#11130f!important;border-color:#ffd335!important}
 </style></head><body><div id="stage">
 <div class="menu-area" id="menuArea"><button class="menu-trigger" id="menuTrigger" aria-expanded="false">☰ MENU</button><div class="menu-panel" id="menuPanel"><div class="menu-heading">ALLER DIRECTEMENT À UNE PAGE</div><button data-go="0">Accueil</button><button data-go="1">Le dispositif</button><button data-go="2">Les contraintes</button><button data-go="3">Les applications</button><button data-go="4">L’architecture</button><button data-go="5">L’IA générative</button><button data-go="6">Le parcours</button><button data-go="7">Quelques exemples</button></div></div>
 <div class="nav"><button id="prev" aria-label="Précédent">‹</button><button id="next" aria-label="Suivant">›</button><button id="full" aria-label="Agrandir l’écran" title="Agrandir l’écran"><svg class="fullscreen-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3V9 M15 3H21V9 M3 15V21H9 M15 21H21V15"/></svg></button></div>
