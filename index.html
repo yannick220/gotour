@@ -1281,13 +1281,13 @@ function storeLogoPreview(app){
   nyx:{bg:'#0a1325',fg:'#dce8ff',filter:'none'},
   post:{bg:'#22362c',fg:'#ffd335',filter:'brightness(0) saturate(100%) invert(80%) sepia(80%) saturate(600%) hue-rotate(350deg)'},
   siiz:{bg:'#ffffff',fg:'#ffd335',filter:'brightness(0) saturate(100%) invert(80%) sepia(80%) saturate(600%) hue-rotate(350deg)'},
-  urbx:{bg:'#f5f7f9',fg:'#111719',filter:'none'},
+  urbx:{bg:'#89988f',fg:'#111719',filter:'none'},
   guidz:{bg:'#07385d',fg:'#ffd335',filter:'none'},
   zuno:{bg:'#07385d',fg:'#ffd335',filter:'none'}
  };
  const t=themes[app]||themes.siiz;
- const name=app==='post'?'<div class="word">POST</div>':'';
- return '<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@700;800;900&display=swap" rel="stylesheet"><style>*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0}body{background:'+t.bg+';display:grid;place-items:center;overflow:hidden}.identity{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}.symbol{font-family:"Montserrat Alternates",Montserrat,Arial,sans-serif;font-weight:900;font-size:115px;letter-spacing:-8px;line-height:1;color:'+t.fg+'}img{display:block;width:130px;height:130px;object-fit:contain;filter:'+t.filter+'}.word{font-family:"Montserrat Alternates",Arial,sans-serif;font-weight:900;color:'+t.fg+';font-size:34px}</style><div class="identity">'+logos[app]+name+'</div></html>';
+ const name='';
+ return '<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@700;800;900&display=swap" rel="stylesheet"><style>*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0}body{background:'+t.bg+';display:grid;place-items:center;overflow:hidden}.identity{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}.symbol{font-family:"Montserrat Alternates",Montserrat,Arial,sans-serif;font-weight:900;font-size:100px;letter-spacing:-5px;line-height:1;color:'+t.fg+'}img{display:block;width:100px;height:100px;max-width:100px;max-height:100px;object-fit:contain;filter:'+t.filter+'}.word{font-family:"Montserrat Alternates",Arial,sans-serif;font-weight:900;color:'+t.fg+';font-size:34px}</style><div class="identity">'+logos[app]+name+'</div></html>';
 }
 function loadStoreApp(app){
  storeFrame.dataset.needsReload='0';
@@ -1296,6 +1296,8 @@ function loadStoreApp(app){
  storeFrame.srcdoc=storeLogoPreview(app);
  storeFrame.title='Logo de '+app.toUpperCase();
 }
+const storeList=document.querySelector('.go-store-list');
+if(storeList){const items=[...storeList.querySelectorAll('[data-demo-app]')];items.sort((a,b)=>a.querySelector('b').textContent.localeCompare(b.querySelector('b').textContent,'fr',{numeric:false,sensitivity:'base'}));items.forEach(item=>storeList.appendChild(item));}
 document.querySelectorAll('[data-demo-app]').forEach(b=>b.addEventListener('click',()=>{
  document.querySelectorAll('[data-demo-app]').forEach(x=>{x.classList.toggle('selected',x===b);x.setAttribute('aria-pressed',String(x===b))});
  storeName.textContent=b.querySelector('b').textContent;
