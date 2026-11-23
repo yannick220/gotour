@@ -481,8 +481,8 @@ const style={version:8,name:'URBZ / WYLO',sources:{[BASE]:{type:'vector',url:'ht
  {id:'road-casing',type:'line',source:BASE,'source-layer':'transportation',paint:{'line-color':'#c7cdd1','line-opacity':.65,'line-width':['interpolate',['linear'],['zoom'],11,1.3,15,4,18,14]}},
  {id:'roads',type:'line',source:BASE,'source-layer':'transportation',paint:{'line-color':'#d7dbde','line-opacity':.94,'line-width':['interpolate',['linear'],['zoom'],11,.8,15,2.5,18,10]}},
  // Native MapLibre volumes are only a WHITE placeholder while full OSM geometries download.
- {id:'tile-outline',type:'line',source:BASE,'source-layer':'building',minzoom:12,paint:{'line-color':'#b8bfc0','line-width':.4}},
- {id:'tile-volumes',type:'fill-extrusion',source:BASE,'source-layer':'building',minzoom:12,paint:{'fill-extrusion-color':'#ffffff','fill-extrusion-height':baseHeight,'fill-extrusion-base':0,'fill-extrusion-opacity':1,'fill-extrusion-vertical-gradient':false}}
+ {id:'tile-outline',type:'line',source:BASE,'source-layer':'building',minzoom:12,layout:{visibility:'none'},paint:{'line-color':'#b8bfc0','line-width':.4}},
+ {id:'tile-volumes',type:'fill-extrusion',source:BASE,'source-layer':'building',minzoom:12,layout:{visibility:'none'},paint:{'fill-extrusion-color':'#ffffff','fill-extrusion-height':baseHeight,'fill-extrusion-base':0,'fill-extrusion-opacity':1,'fill-extrusion-vertical-gradient':false}}
  ],light:{anchor:'viewport',color:'#fff',intensity:.4,position:[1.5,90,65]}};
 
 const map=new maplibregl.Map({container:'map',style,center:DEMO_CENTER,zoom:16.9,bearing:-27,pitch:58,maxPitch:85,antialias:true,hash:false,attributionControl:false});
@@ -792,10 +792,11 @@ function refreshViewport(force=false){
   map.setLayoutProperty('tile-outline','visibility','none');
   return;
  }
- // Pendant le déplacement, montrer le rendu natif des bâtiments et non un trou dans la carte.
+ // Au premier chargement, ne jamais afficher les volumes temporaires qui
+ // provoquent le flash de hauteurs avant l'arrivée des blocs sélectionnables.
  map.setLayoutProperty(FULL_LAYER,'visibility','none');
- map.setLayoutProperty('tile-volumes','visibility','visible');
- map.setLayoutProperty('tile-outline','visibility','visible');
+ map.setLayoutProperty('tile-volumes','visibility',ready?'visible':'none');
+ map.setLayoutProperty('tile-outline','visibility',ready?'visible':'none');
  if(tileFailed.has(cell.key)&&!force)return;
  // Une seule requête active. Si l'utilisateur se déplace rapidement,
  // on saute les anciens endroits pour ne charger que le dernier.
@@ -833,8 +834,8 @@ function setArea(c){
  buildings=new Map();
  if(map.getSource(FULL))map.getSource(FULL).setData(EMPTY);
  if(map.getLayer(FULL_LAYER))map.setLayoutProperty(FULL_LAYER,'visibility','none');
- if(map.getLayer('tile-volumes'))map.setLayoutProperty('tile-volumes','visibility','visible');
- if(map.getLayer('tile-outline'))map.setLayoutProperty('tile-outline','visibility','visible');
+ if(map.getLayer('tile-volumes'))map.setLayoutProperty('tile-volumes','visibility','none');
+ if(map.getLayer('tile-outline'))map.setLayoutProperty('tile-outline','visibility','none');
  showRadius(center);
  refreshViewport(true);
 }
