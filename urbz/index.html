@@ -442,10 +442,10 @@
 const $=id=>document.getElementById(id);
 const DEMO_CENTER=[-1.1601751970930565,46.14314346891054],BASE='osm',FULL='ekoa-complete-osm',FULL_LAYER='ekoa-complete-buildings',EMPTY={type:'FeatureCollection',features:[]},RADIUS=1500,TILE_METERS=480;
 let center=[...DEMO_CENTER],selectedId=null,buildings=new Map(),ready=false,loading=false,requestSeq=0,toastTimer,view=null,expanded=false,marketFilter='patrimoine',history=[];
-const CARD_KINDS={aquarium:'Aquarium',gymnase:'Gymnase du LH',externat:'Externat du lycée hôtelier',internat:'Internat du LH',bowling:'Bowling',auberge:'Auberge de Jeunesse',tribord:'Tribord Lab'};
+const CARD_KINDS={mercure:'Hôtel Mercure',museemaritime:'Musée maritime. Espace Ancon',mediatek:'Médiatek. Bibliothèque universitaire',megacgr:'Méga CGR',mcdonalds:'McDonald’s',technoforum:'Technoforum',chambremetiers:'Chambre des métiers',toursaintnicolas:'Tour Saint-Nicolas',cathedrale:'Cathédrale',aquarium:'Aquarium',gymnase:'Gymnase du LH',externat:'Externat du lycée hôtelier',internat:'Internat du LH',bowling:'Bowling',auberge:'Auberge de Jeunesse',tribord:'Tribord Lab'};
 // Identifiants de cartes communiqués pour la démonstration : 5 derniers caractères de leur référence URBZ.
-const KNOWN_CODES={PON75:'aquarium',FOF8U:'gymnase',DK48O:'externat',WAYX7:'internat',EMK5C:'bowling',EW2EM:'auberge',BCNEL:'tribord'};
-const FIXED_CATEGORIES={aquarium:'patrimoine',gymnase:'services',externat:'services',internat:'services',bowling:'services',auberge:'services',tribord:'patrimoine'};
+const KNOWN_CODES={PON75:'mercure',SO9PW:'aquarium',TX632:'museemaritime','6033D':'mediatek',HQMHC:'megacgr','12GP8':'mcdonalds','65UES':'technoforum',AXQJ3:'chambremetiers',U2LKY:'toursaintnicolas','4GW4Z':'cathedrale',FOF8U:'gymnase',DK48O:'externat',WAYX7:'internat',EMK5C:'bowling',EW2EM:'auberge',BCNEL:'tribord'};
+const FIXED_CATEGORIES={mercure:'services',museemaritime:'patrimoine',megacgr:'services',mcdonalds:'services',technoforum:'services',toursaintnicolas:'patrimoine',cathedrale:'patrimoine',aquarium:'patrimoine',gymnase:'services',externat:'services',internat:'services',bowling:'services',auberge:'services',tribord:'patrimoine'};
 function knownKind(id){return KNOWN_CODES[hashStable(id).slice(-5)]||null}
 const CARDS_KEY='urbz-cartes-lycee-hotelier-v1',ECONOMY_KEY='urbz-economie-demo-v1';
 const CATEGORIES={services:{name:'Services',color:'#EFA1A3',factor:1},habitat:{name:'Résidentiel',color:'#8CBCEB',factor:1.3},patrimoine:{name:'Patrimoine',color:'#D6AF56',factor:6},unclassified:{name:'Non classé',color:'#C9CFD5',factor:1}};
@@ -457,7 +457,7 @@ function saveCards(){try{localStorage.setItem(CARDS_KEY,JSON.stringify(cardRecor
 function money(n){return Math.round(n).toLocaleString('fr-FR')+' <span class="urbz-epsilon" aria-label="epsilon">ε</span>'}
 function hashStable(value){let h=2166136261;for(let i=0;i<value.length;i++){h^=value.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(36).toUpperCase().padStart(7,'0')}
 function cardRef(id){return 'URBZ-LRH-'+hashStable(id)}
-function cardOf(id){if(!id)return null;const saved=cardRecords[id]||null,known=knownKind(id);const kind=known||saved?.kind||null;return kind&&FIXED_CATEGORIES[kind]?{...saved,kind,category:FIXED_CATEGORIES[kind],basePrice:saved?.basePrice??DEMO_PRICES[kind]}:saved}
+function cardOf(id){if(!id)return null;const saved=cardRecords[id]||null,known=knownKind(id);const kind=known||saved?.kind||null;return kind?{...saved,kind,category:FIXED_CATEGORIES[kind]||saved?.manualCategory||saved?.category||'habitat',basePrice:saved?.basePrice??DEMO_PRICES[kind]}:saved}
 function kindName(id){const r=cardOf(id);return CARD_KINDS[r?.kind]||('Bâtiment '+cardRef(id).slice(-5))}
 function categoryOf(id){const known=knownKind(id);if(known)return FIXED_CATEGORIES[known];return cardRecords[id]?.manualCategory||'habitat'}
 function stablePrice(id,kind,category){if(DEMO_PRICES[kind])return DEMO_PRICES[kind];const seed=parseInt(hashStable(id),36)>>>0;return Math.round(((category==='patrimoine'?16000:category==='habitat'?3400:2200)+(seed%4400)*CATEGORIES[category].factor)/100)*100}
