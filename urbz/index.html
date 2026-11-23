@@ -88,8 +88,9 @@
 .fixed-sheet-title .profilepic{width:54px;height:54px}
 .sheet-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:none;padding:15px 1px 32px}
 .sheet-scroll::-webkit-scrollbar{display:none}
-.market-floating-filters{flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;gap:7px;overflow:visible;margin:0 -20px!important;padding:14px 18px calc(16px + env(safe-area-inset-bottom))!important;background:linear-gradient(180deg,#f8f9fbe9,#ffffff 28%);border-top:1px solid #e5e9ec;box-shadow:0 -12px 30px #27313b0b;z-index:5}
-.market-floating-filters .pill{flex:1;padding:11px 7px;min-width:0;font-size:10px;text-align:center;border-radius:30px}
+.market-floating-filters{flex:0 0 auto;display:flex;justify-content:flex-start;align-items:center;gap:9px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x;margin:0 -20px!important;padding:14px 18px calc(16px + env(safe-area-inset-bottom))!important;background:linear-gradient(180deg,#f8f9fbe9,#ffffff 28%);border-top:1px solid #e5e9ec;box-shadow:0 -12px 30px #27313b0b;z-index:5}
+.market-floating-filters::-webkit-scrollbar{display:none}
+.market-floating-filters .pill{flex:0 0 auto;width:max-content;min-width:max-content;max-width:none;padding:11px 15px;font-size:10px;white-space:nowrap;text-align:center;border-radius:30px}
 .sheet.navsheet .sheet-content{padding-bottom:0!important}
 .sheet-scroll .list{margin-bottom:14px}
 .sheet-scroll .spacer{height:12px}
