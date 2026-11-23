@@ -966,7 +966,21 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
 </div><script>
 const stage=document.getElementById('stage'),scenes=[...document.querySelectorAll('.scene')];let index=0;
 const menuArea=document.getElementById('menuArea'),menuTrigger=document.getElementById('menuTrigger'),prev=document.getElementById('prev'),next=document.getElementById('next');
-function fit(){let scale=Math.min((innerWidth-24)/1600,(innerHeight-24)/900,1.8);stage.style.transform=`translate(-50%,-50%) scale(${scale})`;}addEventListener('resize',fit);fit();
+function fit(){
+ const vv=window.visualViewport;
+ const w=vv?Math.min(document.documentElement.clientWidth,vv.width):document.documentElement.clientWidth;
+ const h=vv?Math.min(document.documentElement.clientHeight,vv.height):document.documentElement.clientHeight;
+ const scale=Math.max(.1,Math.min((w-64)/1600,(h-64)/900,1));
+ const cx=vv?vv.offsetLeft+vv.width/2:w/2;
+ const cy=vv?vv.offsetTop+vv.height/2:h/2;
+ stage.style.left=cx+'px';
+ stage.style.top=cy+'px';
+ stage.style.transform='translate(-50%,-50%) scale('+scale+')';
+}
+addEventListener('resize',fit);
+addEventListener('orientationchange',fit);
+if(window.visualViewport){visualViewport.addEventListener('resize',fit);visualViewport.addEventListener('scroll',fit)}
+fit();
 function navigate(n){index=Math.max(0,Math.min(scenes.length-1,n));scenes.forEach((s,i)=>{s.classList.toggle('active',i===index);s.classList.toggle('before',i<index)});menuArea.classList.remove('open');menuTrigger.setAttribute('aria-expanded','false');prev.classList.toggle('hide',index===0);next.classList.toggle('hide',index===scenes.length-1);if(index===4){requestAnimationFrame(alignArchitectureArrows);setTimeout(alignArchitectureArrows,250)}}
 prev.onclick=()=>navigate(index-1);next.onclick=()=>navigate(index+1);const fullscreenButton=document.getElementById('full');
 function syncFullscreenButton(){
