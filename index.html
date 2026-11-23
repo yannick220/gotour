@@ -882,6 +882,11 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
 .go-store-app-icon.concept-24 img,.concept-brand-mark.concept-24 img{display:block;width:72%;height:72%;object-fit:contain;filter:brightness(0)}
 .go-store-demo-story .concept-brand-mark.concept-24 img{width:49px;height:49px;filter:brightness(0) saturate(100%) invert(84%) sepia(64%) saturate(956%) hue-rotate(350deg)}
 .go-store-app-icon.concept-post img{display:block;width:72%;height:72%;object-fit:contain}
+
+/* Project identity colors: consistent thumbnails and large concept phones. */
+.go-store-app-icon.concept-24 img{filter:brightness(0) saturate(100%) invert(83%) sepia(76%) saturate(1000%) hue-rotate(350deg)!important}
+.go-store-app-icon.concept-nazca{font-family:'Montserrat Alternates',Arial,sans-serif!important;font-weight:900!important}
+.go-store-app-icon.guidz-app-icon{font-family:'Montserrat Alternates',Arial,sans-serif!important;font-weight:900!important}
 </style></head><body><div id="stage">
 <div class="menu-area" id="menuArea"><button class="menu-trigger" id="menuTrigger" aria-expanded="false">☰ MENU</button><div class="menu-panel" id="menuPanel"><div class="menu-heading">ALLER DIRECTEMENT À UNE PAGE</div><button data-go="0">Accueil</button><button data-go="1">Le dispositif</button><button data-go="2">Les contraintes</button><button data-go="3">Les applications</button><button data-go="4">L’architecture</button><button data-go="5">L’IA générative</button><button data-go="6">Le parcours</button><button data-go="7">Quelques exemples</button></div></div>
 <div class="nav"><button id="prev" aria-label="Précédent">‹</button><button id="next" aria-label="Suivant">›</button><button id="full" aria-label="Agrandir l’écran" title="Agrandir l’écran"><svg class="fullscreen-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3V9 M15 3H21V9 M3 15V21H9 M15 21H21V15"/></svg></button></div>
@@ -1226,8 +1231,8 @@ storeExit.addEventListener('click',storeClose);
 const conceptApps=new Set(['one','nazca','nyx','post']);
 function conceptPreview(app){
  const items={
- one:{mark:'<img src="https://yannick220.github.io/gotour/assets/24-logo.svg" alt="" style="width:140px;height:140px;object-fit:contain;filter:brightness(0) invert(1)">',name:'',bg:'#171a18',accent:'#ffd335'},
- nazca:{mark:'N',name:'NAZCA+',bg:'#fff',accent:'#11130f'},
+ one:{mark:'<img src="https://yannick220.github.io/gotour/assets/24-logo.svg" alt="" style="width:140px;height:140px;object-fit:contain;filter:brightness(0)">',name:'',bg:'#ffd335',accent:'#11130f'},
+ nazca:{mark:'N',name:'NAZCA+',bg:'#ffd335',accent:'#11130f'},
  nyx:{mark:'✧',name:'NYX',bg:'#0a1325',accent:'#dce8ff'},
  post:{mark:'',name:'POST',bg:'#22362c',accent:'#ffd335'},
  urbx:{mark:'▥',name:'URBZ',bg:'#0c1218',accent:'#ffd335'}
@@ -1258,16 +1263,28 @@ function guidzStaticPreview(){
 }
 function storeLogoPreview(app){
  const logos={
- one:'<img src="https://yannick220.github.io/gotour/assets/24-logo.svg" alt="">',
- nazca:'<span class="symbol">N</span>',
- nyx:'<span class="symbol">✧</span>',
- post:'<img src="https://yannick220.github.io/gotour/assets/post-logo.svg" alt="">',
- siiz:'<img src="https://yannick220.github.io/siizapp/assets/siiz-logo.svg?v=union91-79bb567" alt="">',
- urbx:'<span class="symbol">▥</span>',
- guidz:'<span class="symbol">G</span>',
- zuno:'<img src="https://yannick220.github.io/gotour/zuno/assets/zuno-logo.svg" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'" alt=""><span class="symbol" style="display:none">♛</span>'
+  one:'<img src="https://yannick220.github.io/gotour/assets/24-logo.svg" alt="">',
+  nazca:'<span class="symbol">N</span>',
+  nyx:'<span class="symbol">✧</span>',
+  post:'<img src="https://yannick220.github.io/gotour/assets/post-logo.svg" alt="">',
+  siiz:'<img src="https://yannick220.github.io/siizapp/assets/siiz-logo.svg?v=union91-79bb567" alt="">',
+  urbx:'<span class="symbol">▥</span>',
+  guidz:'<span class="symbol">G</span>',
+  zuno:'<img src="https://yannick220.github.io/gotour/zuno/zuno-crown.svg" alt="">'
  };
- return '<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0}body{background:#fff;display:grid;place-items:center;overflow:hidden}.symbol{font-family:Montserrat,Arial,sans-serif;font-weight:900;font-size:118px;letter-spacing:-8px;color:#111;line-height:1}.word24{font-size:110px;letter-spacing:-9px}img{display:block;width:42%;max-height:35%;object-fit:contain;filter:brightness(0)}</style>'+logos[app]+'</html>';
+ const themes={
+  one:{bg:'#ffd335',fg:'#11130f',filter:'brightness(0)'},
+  nazca:{bg:'#ffd335',fg:'#11130f',filter:'brightness(0)'},
+  nyx:{bg:'#0a1325',fg:'#dce8ff',filter:'none'},
+  post:{bg:'#22362c',fg:'#ffd335',filter:'brightness(0) saturate(100%) invert(80%) sepia(80%) saturate(600%) hue-rotate(350deg)'},
+  siiz:{bg:'#ffffff',fg:'#ffd335',filter:'brightness(0) saturate(100%) invert(80%) sepia(80%) saturate(600%) hue-rotate(350deg)'},
+  urbx:{bg:'#0c1218',fg:'#ffd335',filter:'none'},
+  guidz:{bg:'#07385d',fg:'#ffd335',filter:'none'},
+  zuno:{bg:'#07385d',fg:'#ffd335',filter:'none'}
+ };
+ const t=themes[app]||themes.siiz;
+ const name=app==='post'?'<div class="word">POST</div>':'';
+ return '<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@700;800;900&display=swap" rel="stylesheet"><style>*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0}body{background:'+t.bg+';display:grid;place-items:center;overflow:hidden}.identity{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}.symbol{font-family:"Montserrat Alternates",Montserrat,Arial,sans-serif;font-weight:900;font-size:115px;letter-spacing:-8px;line-height:1;color:'+t.fg+'}img{display:block;width:130px;height:130px;object-fit:contain;filter:'+t.filter+'}.word{font-family:"Montserrat Alternates",Arial,sans-serif;font-weight:900;color:'+t.fg+';font-size:34px}</style><div class="identity">'+logos[app]+name+'</div></html>';
 }
 function loadStoreApp(app){
  storeFrame.dataset.needsReload='0';
