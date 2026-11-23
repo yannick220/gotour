@@ -782,6 +782,21 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
 .siiz-external-scale label{display:block;font-size:11px;font-weight:700;margin-bottom:11px}
 .siiz-external-scale input{width:100%;accent-color:#ffd335}
 .siiz-external-labels{display:flex;justify-content:space-between;font-size:10px;color:#64716b;margin-top:5px}
+
+/* A draggable control outside the phone, never clipped by the phone iframe. */
+.go-store-scene.demo-focused .siiz-external-mode{
+ position:fixed!important;left:var(--siiz-panel-x,20px)!important;top:var(--siiz-panel-y,auto)!important;
+ bottom:auto!important;pointer-events:auto!important;touch-action:auto!important;
+ width:246px!important;z-index:999!important
+}
+.siiz-external-title{cursor:grab;touch-action:none;user-select:none;padding:2px 30px 9px 0}
+.siiz-external-title:active{cursor:grabbing}
+.siiz-external-options button{border-radius:999px!important}
+.siiz-external-symbol{font-size:27px!important}
+.siiz-external-scale input[type=range]{appearance:none;-webkit-appearance:none;height:5px;border-radius:99px;
+ background:linear-gradient(to right,#ffd335 0%,#ffd335 var(--siiz-external-fill,31.5%),#e4e8e1 var(--siiz-external-fill,31.5%),#e4e8e1 100%)!important}
+.siiz-external-scale input[type=range]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;
+ width:20px;height:20px;border-radius:50%;background:#ffd335;border:3px solid white;box-shadow:0 2px 6px #0003}
 </style></head><body><div id="stage">
 <div class="menu-area" id="menuArea"><button class="menu-trigger" id="menuTrigger" aria-expanded="false">☰ MENU</button><div class="menu-panel" id="menuPanel"><div class="menu-heading">ALLER DIRECTEMENT À UNE PAGE</div><button data-go="0">Accueil</button><button data-go="1">Le dispositif</button><button data-go="2">Les contraintes</button><button data-go="3">Les applications</button><button data-go="4">L’architecture</button><button data-go="5">L’IA générative</button><button data-go="6">Le parcours</button><button data-go="7">Quelques exemples</button></div></div>
 <div class="nav"><button id="prev" aria-label="Précédent">‹</button><button id="next" aria-label="Suivant">›</button><button id="full" aria-label="Agrandir l’écran" title="Agrandir l’écran"><svg class="fullscreen-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3V9 M15 3H21V9 M3 15V21H9 M15 21H21V15"/></svg></button></div>
@@ -858,7 +873,7 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
 <button type="button" data-siiz-external-mode="travel"><span class="siiz-external-symbol">✈</span>Voyage</button>
 </div>
 <div class="siiz-external-scale" id="siizExternalScale" hidden><label for="siizExternalRange">Échelle des distances</label><input type="range" id="siizExternalRange" min="0" max="1000" value="685" step="1"><div class="siiz-external-labels"><span>Domicile</span><span>Vacances</span></div></div>
-</div><div class="go-store-preview" id="goStorePreviewShell"><iframe id="goStorePreview" title="Aperçu SIIZ" src="https://yannick220.github.io/siizapp/store.html?embed=1&amp;app=siiz&amp;v=externalmode-20261123-1495ebe" loading="lazy"></iframe><button class="go-store-launch" id="goStoreLaunch" aria-label="Agrandir la démonstration"></button></div>
+</div><div class="go-store-preview" id="goStorePreviewShell"><iframe id="goStorePreview" title="Aperçu SIIZ" src="https://yannick220.github.io/siizapp/store.html?embed=1&amp;app=siiz&amp;v=dragmode-20261123-4aceae3" loading="lazy"></iframe><button class="go-store-launch" id="goStoreLaunch" aria-label="Agrandir la démonstration"></button></div>
 </div>
 <button class="go-store-exit" id="goStoreExit" aria-label="Quitter la démonstration">×</button><div class="go-store-demo-story" id="goStoreDemoStory"><div class="go-store-story-brand"><img src="https://yannick220.github.io/siizapp/assets/siiz-logo.svg" alt=""><strong>siiz</strong></div><h3>LE CONTACT,<span>À BONNE DISTANCE.</span></h3><p>En voyage, profitez de ceux qui sont là. SIIZ met naturellement à distance les conversations avec ceux qui sont restés chez eux, sans jamais couper le lien.<br><br>Envie de les retrouver ? Un simple glissement de doigt suffit pour se reconnecter.<br><br><strong>Déconnecté par défaut. Connecté par choix.</strong></p></div><strong class="go-store-demo-name" id="goStoreActiveName">SIIZ</strong>
 </section>
@@ -1028,6 +1043,41 @@ function storeOpen(){document.getElementById('goStoreDemoStory').classList.toggl
 /* Triple-click the visible SIIZ story next to the enlarged phone. */
 const siizExternalPanel=document.getElementById('siizExternalMode');
 const siizExternalScale=document.getElementById('siizExternalScale');
+const siizExternalRange=document.getElementById('siizExternalRange');
+let siizPanelDrag=null,siizPanelUserMoved=false;
+function siizPositionPanel(){
+ if(siizPanelUserMoved)return;
+ const phone=document.getElementById('goStorePreviewShell').getBoundingClientRect();
+ const panelWidth=246,gap=18;
+ const x=Math.max(8,phone.left-panelWidth-gap);
+ const y=Math.min(Math.max(8,phone.bottom-270),Math.max(8,window.innerHeight-290));
+ siizExternalPanel.style.setProperty('--siiz-panel-x',x+'px');
+ siizExternalPanel.style.setProperty('--siiz-panel-y',y+'px');
+}
+function siizUpdateExternalFill(){
+ siizExternalPanel.style.setProperty('--siiz-external-fill',(Number(siizExternalRange.value)/10)+'%');
+}
+const siizPanelHandle=siizExternalPanel.querySelector('.siiz-external-title');
+siizPanelHandle.addEventListener('pointerdown',e=>{
+ if(e.button!==0)return;
+ const r=siizExternalPanel.getBoundingClientRect();
+ siizPanelDrag={id:e.pointerId,dx:e.clientX-r.left,dy:e.clientY-r.top};
+ siizPanelHandle.setPointerCapture(e.pointerId);
+ e.preventDefault();
+});
+siizPanelHandle.addEventListener('pointermove',e=>{
+ if(!siizPanelDrag||e.pointerId!==siizPanelDrag.id)return;
+ siizPanelUserMoved=true;
+ const x=Math.min(Math.max(6,e.clientX-siizPanelDrag.dx),Math.max(6,innerWidth-siizExternalPanel.offsetWidth-6));
+ const y=Math.min(Math.max(6,e.clientY-siizPanelDrag.dy),Math.max(6,innerHeight-siizExternalPanel.offsetHeight-6));
+ siizExternalPanel.style.setProperty('--siiz-panel-x',x+'px');
+ siizExternalPanel.style.setProperty('--siiz-panel-y',y+'px');
+});
+siizPanelHandle.addEventListener('pointerup',()=>{siizPanelDrag=null});
+siizPanelHandle.addEventListener('pointercancel',()=>{siizPanelDrag=null});
+window.addEventListener('resize',siizPositionPanel);
+siizUpdateExternalFill();
+
 function siizSendExternal(data){
  storeFrame.contentWindow?.postMessage(data,'https://yannick220.github.io');
 }
@@ -1038,6 +1088,7 @@ siizExternalPanel.querySelectorAll('[data-siiz-external-mode]').forEach(button=>
  siizSendExternal({type:'siiz-demo-set-mode',travel});
 }));
 document.getElementById('siizExternalRange').addEventListener('input',e=>{
+ siizUpdateExternalFill();
  siizSendExternal({type:'siiz-demo-set-scale',value:Number(e.target.value)});
 });
 document.getElementById('siizExternalClose').addEventListener('click',()=>{siizExternalPanel.hidden=true});
@@ -1046,7 +1097,7 @@ document.getElementById('goStoreDemoStory').addEventListener('click',e=>{
  if(!storeScene.classList.contains('demo-focused')||storeName.textContent.trim().toLowerCase()!=='siiz')return;
  if(!e.target.closest('.go-store-story-brand, h3'))return;
  const time=Date.now();siizStoryClicks=time-siizStoryLastClick<850?siizStoryClicks+1:1;siizStoryLastClick=time;
- if(siizStoryClicks===3){siizStoryClicks=0;siizExternalPanel.hidden=!siizExternalPanel.hidden;}
+ if(siizStoryClicks===3){siizStoryClicks=0;siizExternalPanel.hidden=!siizExternalPanel.hidden;if(!siizExternalPanel.hidden)requestAnimationFrame(siizPositionPanel);}
 });
 storeLaunch.addEventListener('click',storeOpen);
 storeExit.addEventListener('click',storeClose);
@@ -1054,7 +1105,7 @@ document.querySelectorAll('[data-demo-app]').forEach(b=>b.addEventListener('clic
   document.querySelectorAll('[data-demo-app]').forEach(x=>{x.classList.toggle('selected',x===b);x.setAttribute('aria-pressed',String(x===b))});
   storeName.textContent=b.querySelector('b').textContent;
   storeFrame.title='Démonstration '+storeName.textContent;
-  storeFrame.src='https://yannick220.github.io/siizapp/store.html?embed=1&app='+encodeURIComponent(b.dataset.demoApp)+'&v=externalmode-20261123-1495ebe';
+  storeFrame.src='https://yannick220.github.io/siizapp/store.html?embed=1&app='+encodeURIComponent(b.dataset.demoApp)+'&v=dragmode-20261123-4aceae3';
 }));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&storeScene.classList.contains('demo-focused')){storeClose();e.stopImmediatePropagation()}},true);
 document.getElementById('prev').addEventListener('click',storeClose);
