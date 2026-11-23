@@ -797,6 +797,7 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
  background:linear-gradient(to right,#ffd335 0%,#ffd335 var(--siiz-external-fill,31.5%),#e4e8e1 var(--siiz-external-fill,31.5%),#e4e8e1 100%)!important}
 .siiz-external-scale input[type=range]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;
  width:20px;height:20px;border-radius:50%;background:#ffd335;border:3px solid white;box-shadow:0 2px 6px #0003}
+.siiz-external-symbol{display:flex;align-items:center;justify-content:center}.siiz-external-symbol svg{display:block;width:27px;height:27px}
 </style></head><body><div id="stage">
 <div class="menu-area" id="menuArea"><button class="menu-trigger" id="menuTrigger" aria-expanded="false">☰ MENU</button><div class="menu-panel" id="menuPanel"><div class="menu-heading">ALLER DIRECTEMENT À UNE PAGE</div><button data-go="0">Accueil</button><button data-go="1">Le dispositif</button><button data-go="2">Les contraintes</button><button data-go="3">Les applications</button><button data-go="4">L’architecture</button><button data-go="5">L’IA générative</button><button data-go="6">Le parcours</button><button data-go="7">Quelques exemples</button></div></div>
 <div class="nav"><button id="prev" aria-label="Précédent">‹</button><button id="next" aria-label="Suivant">›</button><button id="full" aria-label="Agrandir l’écran" title="Agrandir l’écran"><svg class="fullscreen-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3V9 M15 3H21V9 M3 15V21H9 M15 21H21V15"/></svg></button></div>
@@ -869,11 +870,11 @@ body.go-store-demo-running .menu-area,body.go-store-demo-running .nav{visibility
 <button type="button" class="siiz-external-close" id="siizExternalClose" aria-label="Fermer les modes">×</button>
 <div class="siiz-external-title">MODE</div>
 <div class="siiz-external-options">
-<button type="button" data-siiz-external-mode="home" class="selected"><span class="siiz-external-symbol">⌂</span>Domicile</button>
-<button type="button" data-siiz-external-mode="travel"><span class="siiz-external-symbol">✈</span>Voyage</button>
+<button type="button" data-siiz-external-mode="home" class="selected"><span class="siiz-external-symbol"><svg viewBox="0 -100 120 130" aria-hidden="true"><path d="M30.35-0.58L44.3-0.58L44.3-30.93L75.7-30.93L75.7-0.58L89.65-0.58L89.65-45.03L60-67.28L30.35-45.03L30.35-0.58ZM19,10.77L19-50.73L60-81.53L101-50.73L101,10.77L64.75,10.77L64.75-19.98L55.25-19.98L55.25,10.77L19,10.77ZM60-33.93Z" fill="currentColor"/></svg></span>Domicile</button>
+<button type="button" data-siiz-external-mode="travel"><span class="siiz-external-symbol"><svg viewBox="0 -100 120 130" aria-hidden="true"><path transform="rotate(90 60 -35)" d="M34.15,15.77L34.15,2.02L49.25-8.53L49.25-25.33L9-9.23L9-25.63L49.3-53.78L49.3-75.53Q49.3-79.93 52.45-83.08Q55.6-86.23 60-86.23Q64.4-86.23 67.55-83.08Q70.7-79.93 70.7-75.53L70.7-53.78L111-25.63L111-9.23L70.7-25.33L70.7-8.53L85.8,2.02L85.8,15.77L60,8.07L34.15,15.77Z" fill="currentColor"/></svg></span>Voyage</button>
 </div>
 <div class="siiz-external-scale" id="siizExternalScale" hidden><label for="siizExternalRange">Échelle des distances</label><input type="range" id="siizExternalRange" min="0" max="1000" value="315" step="1"><div class="siiz-external-labels"><span>Domicile</span><span>Vacances</span></div></div>
-</div><div class="go-store-preview" id="goStorePreviewShell"><iframe id="goStorePreview" title="Aperçu SIIZ" src="https://yannick220.github.io/siizapp/store.html?embed=1&amp;app=siiz&amp;v=photo-20261123-9f0603b" loading="lazy"></iframe><button class="go-store-launch" id="goStoreLaunch" aria-label="Agrandir la démonstration"></button></div>
+</div><div class="go-store-preview" id="goStorePreviewShell"><iframe id="goStorePreview" title="Aperçu SIIZ" src="https://yannick220.github.io/siizapp/store.html?embed=1&amp;app=siiz&amp;v=icons-20261123-d0526c8" loading="lazy"></iframe><button class="go-store-launch" id="goStoreLaunch" aria-label="Agrandir la démonstration"></button></div>
 </div>
 <button class="go-store-exit" id="goStoreExit" aria-label="Quitter la démonstration">×</button><div class="go-store-demo-story" id="goStoreDemoStory"><div class="go-store-story-brand"><img src="https://yannick220.github.io/siizapp/assets/siiz-logo.svg" alt=""><strong>siiz</strong></div><h3>LE CONTACT,<span>À BONNE DISTANCE.</span></h3><p>En voyage, profitez de ceux qui sont là. SIIZ met naturellement à distance les conversations avec ceux qui sont restés chez eux, sans jamais couper le lien.<br><br>Envie de les retrouver ? Un simple glissement de doigt suffit pour se reconnecter.<br><br><strong>Déconnecté par défaut. Connecté par choix.</strong></p></div><strong class="go-store-demo-name" id="goStoreActiveName">SIIZ</strong>
 </section>
@@ -1126,7 +1127,7 @@ document.querySelectorAll('[data-demo-app]').forEach(b=>b.addEventListener('clic
   document.querySelectorAll('[data-demo-app]').forEach(x=>{x.classList.toggle('selected',x===b);x.setAttribute('aria-pressed',String(x===b))});
   storeName.textContent=b.querySelector('b').textContent;
   storeFrame.title='Démonstration '+storeName.textContent;
-  storeFrame.src='https://yannick220.github.io/siizapp/store.html?embed=1&app='+encodeURIComponent(b.dataset.demoApp)+'&v=photo-20261123-9f0603b';
+  storeFrame.src='https://yannick220.github.io/siizapp/store.html?embed=1&app='+encodeURIComponent(b.dataset.demoApp)+'&v=icons-20261123-d0526c8';
 }));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&storeScene.classList.contains('demo-focused')){storeClose();e.stopImmediatePropagation()}},true);
 document.getElementById('prev').addEventListener('click',storeClose);
